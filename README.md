@@ -9,7 +9,7 @@
 
 #### Deskripsi Aplikasi 
 Nama: SteakHouse Sigma
-Deskripsi: XXXXXX adalah sebuah website yang dirancang untuk membantu pengguna menemukan dan memilih steakhouse terbaik di Jakarta. Melalui XXXXX, pengguna dapat mencari steakhouse berdasarkan lokasi, harga, rating, dan jenis menu yang ditawarkan. Selain itu, pengguna dapat membaca dan menulis ulasan, berdiskusi dengan komunitas pecinta steak di forum, serta melakukan reservasi langsung ke steakhouse pilihan mereka.
+Deskripsi: SteakHouse Sigma adalah sebuah website yang dirancang untuk membantu pengguna menemukan dan memilih steakhouse terbaik di Jakarta. Melalui SteakHouse Sigma, pengguna dapat mencari steakhouse berdasarkan lokasi, harga, rating, dan jenis menu yang ditawarkan. Selain itu, pengguna dapat membaca dan menulis ulasan, berdiskusi dengan komunitas pecinta steak di forum, serta melakukan reservasi langsung ke steakhouse pilihan mereka.
 
 #### Modul
 1. Modul Pencarian Steakhouse - [Nama Anggota]
@@ -40,7 +40,7 @@ Deskripsi: XXXXXX adalah sebuah website yang dirancang untuk membantu pengguna m
 
 #### Dataset
 ```
-https://www.kaggle.com/datasets/miradelimanr/steakhouse-jakarta
+Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Dataset ini berisi informasi lengkap mengenai steakhouse yang ada di Jakarta, termasuk nama, lokasi, rating, harga, dan detail lainnya yang relevan untuk aplikasi SteakHouse Sigma.
 ```
 
 #### Roles
