@@ -39,9 +39,11 @@ Deskripsi: SteakHouse Sigma adalah sebuah website yang dirancang untuk membantu 
 - Data akan diverifikasi sebelum ditampilkan untuk memastikan keakuratan informasi.
 
 #### Dataset
-```
 Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Dataset ini berisi informasi lengkap mengenai steakhouse yang ada di Jakarta, termasuk nama, lokasi, rating, harga, dan detail lainnya yang relevan untuk aplikasi SteakHouse Sigma.
-```
+'''
+https://www.kaggle.com/datasets/miradelimanr/steakhouse-jakarta
+'''
+
 
 #### Roles
 1. Pengguna tidak login:
