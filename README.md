@@ -15,7 +15,7 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 1. Modul Reservasi - [Anita Khoirun Nisa]
 - Pengguna dapat melakukan reservasi meja secara online.
 - Formulir reservasi mencakup input nama, tanggal, waktu, jumlah tamu, dan kontak.
-- Pengguna dapat melakukan booking
+- Pengguna dapat melakukan booking menu spesial
 - Sistem akan mengkonfirmasi ketersediaan dan memberikan notifikasi kepada pengguna.
 
 2. Modul Ulasan dan Rating - [Joshua Elisha Shalom Soedarmintarto]
@@ -39,8 +39,7 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 - Fitur ini membantu mempersonalisasi pengalaman pengguna dengan memberikan saran yang lebih relevan dan sesuai dengan keinginan mereka.
 
 #### Dataset
-Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Dataset ini berisi informasi lengkap mengenai steakhouse yang ada di Jakarta, termasuk nama, lokasi, rating, harga, dan detail lainnya yang relevan untuk aplikasi SteakHouse Sigma. https://www.kaggle.com/datasets/miradelimanr/steakhouse-jakarta
-
+Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Dataset ini berisi informasi lengkap mengenai steakhouse yang ada di Jakarta, termasuk nama, lokasi, rating, harga, dan detail lainnya yang relevan untuk aplikasi Steve. https://www.kaggle.com/datasets/miradelimanr/steakhouse-jakarta
 
 #### Roles
 1. Pengguna tidak login:
