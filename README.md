@@ -57,4 +57,4 @@ Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Da
 - Dapat melihat wishlist yang telat dibuat
 - Dapat mencari daftar steakhouse yang sesuai dengan isi preference form
 
-#### Link aplikasi:
+#### Link aplikasi: https://danniel-steve.pbp.cs.ui.ac.id/
