@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Steve - Dashboard</title>
+{% endblock meta %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+
+    <!-- Space between Navbar and Search -->
+    <section class="container mx-auto mt-24">
+        <div class="flex flex-col items-center">
+            <h1 class="text-2xl font-bold mb-8">Find and Reserve a Table</h1>
+            <!-- Google-style Search -->
+            <div class="w-full max-w-2xl mb-12"> <!-- Added margin-bottom for space -->
+                <form id="reservationForm" class="flex items-center bg-white shadow-md rounded-full overflow-hidden p-2">
+                    <!-- Steakhouse Search Input -->
+                    <input type="text" id="steakhouse" class="flex-grow p-3 text-lg focus:outline-none focus:ring-0 border-none" placeholder="Search Steakhouse...">
+                    <!-- Search Button -->
+                    <button type="submit" class="ml-3 bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Grid Section -->
+    <section class="container mx-auto my-8">
+        <h2 class="text-3xl font-bold text-center text-red-500 mb-8">Reserve a Couple's Table</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Couple Seating Option 1 -->
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h3 class="text-xl font-bold mb-4">Romantic Spot</h3>
+                <p class="text-gray-600 mb-4">Perfect for a candlelit dinner.</p>
+                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Reserve</button>
+            </div>
+
+            <!-- Couple Seating Option 2 -->
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h3 class="text-xl font-bold mb-4">Window View</h3>
+                <p class="text-gray-600 mb-4">Enjoy a beautiful cityscape while dining.</p>
+                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Reserve</button>
+            </div>
+
+            <!-- Couple Seating Option 3 -->
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h3 class="text-xl font-bold mb-4">Private Booth</h3>
+                <p class="text-gray-600 mb-4">Cozy and private for an intimate meal.</p>
+                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Reserve</button>
+            </div>v
+
+            <!-- Add more seating options if needed -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary-red text-white text-center py-4">
+        <p>&copy; 2024 Steve SteakHouse. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Form Submission -->
+    <script>
+
+        document.getElementById('reservationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const steakhouse = document.getElementById('steakhouse').value;
+
+            if (steakhouse) {
+                alert(`Searching for ${steakhouse}`);
+            } else {
+                alert('Please enter a steakhouse to search.');
+            }
+        });
+    </script>
+{% endblock content %}

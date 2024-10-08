@@ -1,0 +1,52 @@
+<nav class="bg-red-600 shadow-lg fixed top-0 left-0 z-40 w-screen">
+  <div class="max-w-7xl md-10 mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center">
+        <h1 class="text-xl sm:text-2xl font-bold text-krem">Steve SteakHouse</h1>
+      </div>
+      <div class="hidden md:flex items-center">
+        <span class="text-krem py-2 px-4 mr-2">Welcome, Danniel</span>
+        <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
+          Home
+        </a>
+        <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
+          Reservation
+        </a>
+        <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
+          Contact
+        </a>
+      </div>
+      <div class="md:hidden flex items-center">
+        <button class="mobile-menu-button">
+          <svg class="w-6 h-6 text-krem" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div class="mobile-menu hidden md:hidden px-4 w-full">
+    <div class="pt-2 pb-3 space-y-1">
+        <span class="block text-gray-300 px-3 py-2">Welcome, Danniel</span>
+        <a href="#" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">
+          Home
+        </a>
+        <a href="#" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">
+          Reservation
+        </a>
+        <a href="#" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">
+          Contact
+        </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.querySelector("button.mobile-menu-button");
+  const menu = document.querySelector(".mobile-menu");
+
+  btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
+</script>
