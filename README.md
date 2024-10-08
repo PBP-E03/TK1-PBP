@@ -55,11 +55,7 @@ Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Da
 - Dapat melakukan reservasi tempat dan memesan steak secara online.
 - Dapat melihat daftar reservasi yang telah dibuat atau masih berlangsung.
 - Dapat melihat riwayat reservasi yang sudah dilakukan.
-- Dapat menambahkan steakhouse baru dan menu (jika memiliki hak akses khusus).
+- Dapat melihat wishlist yang telat dibuat
+- Dapat mencari daftar steakhouse yang sesuai dengan isi preference form
 
-3. Admin:
-- Memiliki semua akses yang dimiliki pengguna login.
-- Dapat mengelola data steakhouse (menambah, mengedit, menghapus).
-- Dapat memoderasi forum dan ulasan (menghapus konten yang tidak sesuai).
-- Dapat melihat dan mengelola data reservasi pengguna.
-
+#### Link aplikasi:
