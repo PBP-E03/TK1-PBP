@@ -33,10 +33,10 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 - Sistem memungkinkan pengguna melihat wishlist yang tersimpan, menghapus item dari wishlist jika tidak lagi diinginkan, dan mengubah lokasi kategori item.
 - Modul ini membantu pengguna menyimpan pilihan favorit mereka untuk direncanakan atau dipertimbangkan di masa mendatang. 
 
-5. Modul Preference Form - [Danniel]
-- Pengguna dapat mengisi formulir preferensi untuk menentukan lokasi steakhouse terdekat, range budget, dan jenis makanan yang diingini.
-- Berdasarkan preferensi yang diisi, sistem akan memberikan rekomendasi top 3 steakhouse dengan menu yang sesuai dengan kriteria pengguna dan juga dengan review terbaik.
-- Fitur ini membantu mempersonalisasi pengalaman pengguna dengan memberikan saran yang lebih relevan dan sesuai dengan keinginan mereka.
+5. Modul Daftar - [Danniel]
+- Pengguna dapat mencari steakhouse dan menu yang diinginkan.
+- Modul ini akan menampilkan gambar menu, review, rating, dan lokasi.
+- Modul ini juga dapat mengedit deskripsi steakhouse.
 
 #### Dataset
 Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Dataset ini berisi informasi lengkap mengenai steakhouse yang ada di Jakarta, termasuk nama, lokasi, rating, harga, dan detail lainnya yang relevan untuk aplikasi Steve. https://www.kaggle.com/datasets/miradelimanr/steakhouse-jakarta
