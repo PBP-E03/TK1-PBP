@@ -15,7 +15,7 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 1. Modul Reservasi - [Anita Khoirun Nisa]
 - Pengguna dapat melakukan reservasi meja secara online.
 - Formulir reservasi mencakup input nama, tanggal, waktu, jumlah tamu, dan kontak.
-- Pengguna dapat melakukan booking menu spesial
+- Pengguna dapat melakukan booking menu unik.
 - Sistem akan mengkonfirmasi ketersediaan dan memberikan notifikasi kepada pengguna.
 
 2. Modul Ulasan dan Rating - [Joshua Elisha Shalom Soedarmintarto]
@@ -24,19 +24,19 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 - Memungkinkan pengguna untuk melihat ulasan terbaru dan terpopuler.
 
 3. Modul Forum Diskusi - [Athallah Wibowo]
-- Pengguna dapat berdiskusi dengan anggota lain mengenai topik seputar steakhouse, menu, dan pengalaman kuliner.
-- Fitur meliputi pembuatan topik baru, komentar, dan like/dislike.
-- Memfasilitasi interaksi dan pertukaran informasi antar pengguna.
+- Pengguna dapat berdiskusi dengan admin dan sesama anggota lain mengenai topik seputar steakhouse dan menu.
+- Fitur meliputi pembuatan komentar, dan pemperbarui komentar.
+- Memfasilitasi interaksi dan pertukaran informasi antar pengguna dan admin.
 
 4. Modul Wishlist - [Nafisa Arrasyida]
-- Pengguna dapat menambahkan steakhouse, menu, atau produk tertentu ke dalam daftar wishlist mereka untuk disimpan dan diakses di lain waktu.
-- Sistem memungkinkan pengguna melihat wishlist yang tersimpan dan menghapus item dari wishlist jika tidak lagi diinginkan.
+- Pengguna dapat menambahkan steakhouse, menu, atau produk tertentu ke dalam daftar wishlist sesuai kategori yang pengguna buat, mereka untuk disimpan dan diakses di lain waktu.
+- Sistem memungkinkan pengguna melihat wishlist yang tersimpan, menghapus item dari wishlist jika tidak lagi diinginkan, dan mengubah lokasi kategori item.
 - Modul ini membantu pengguna menyimpan pilihan favorit mereka untuk direncanakan atau dipertimbangkan di masa mendatang. 
 
-5. Modul Preference Form - [Danniel]
-- Pengguna dapat mengisi formulir preferensi untuk menentukan lokasi steakhouse terdekat, range budget, dan jenis makanan yang diingini.
-- Berdasarkan preferensi yang diisi, sistem akan memberikan rekomendasi top 3 steakhouse dengan menu yang sesuai dengan kriteria pengguna dan juga dengan review terbaik.
-- Fitur ini membantu mempersonalisasi pengalaman pengguna dengan memberikan saran yang lebih relevan dan sesuai dengan keinginan mereka.
+5. Modul Daftar - [Danniel]
+- Pengguna dapat mencari steakhouse dan menu yang diinginkan.
+- Modul ini akan menampilkan gambar menu, review, rating, dan lokasi.
+- Modul ini juga dapat mengedit deskripsi steakhouse.
 
 #### Dataset
 Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Dataset ini berisi informasi lengkap mengenai steakhouse yang ada di Jakarta, termasuk nama, lokasi, rating, harga, dan detail lainnya yang relevan untuk aplikasi Steve. https://www.kaggle.com/datasets/miradelimanr/steakhouse-jakarta
@@ -54,7 +54,14 @@ Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Da
 - Dapat melakukan reservasi tempat dan memesan steak secara online.
 - Dapat melihat daftar reservasi yang telah dibuat atau masih berlangsung.
 - Dapat melihat riwayat reservasi yang sudah dilakukan.
-- Dapat melihat wishlist yang telat dibuat
-- Dapat mencari daftar steakhouse yang sesuai dengan isi preference form
+- Dapat melihat wishlist yang telat dibuat.
+- Dapat mengubah wishlist yang telah dibuat.
+- Dapat mencari daftar steakhouse yang sesuai dengan isi preference form.
+
+3. Pengguna Admin:
+- Memiliki semua akses yang dimiliki pengguna login.
+- Dapat mengatur forum diskusi dan ulasan.
+- Dapat mengatur dan melihat reservasi yang dibuat di steakhouse.
+- Dapat melihat laporan statistik.
 
 #### Link aplikasi: https://danniel-steve.pbp.cs.ui.ac.id/
