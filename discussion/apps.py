@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class UlasanSteakHouseConfig(AppConfig):
+class DiscussionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ulasan_steak_house'
+    name = 'discussion'
