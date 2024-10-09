@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ForumDiscussionConfig(AppConfig):
+class ReservationConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'forum_discussion'
+    name = 'reservation'
