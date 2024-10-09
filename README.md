@@ -15,7 +15,7 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 1. Modul Reservasi - [Anita Khoirun Nisa]
 - Pengguna dapat melakukan reservasi meja secara online.
 - Formulir reservasi mencakup input nama, tanggal, waktu, jumlah tamu, dan kontak.
-- Pengguna dapat melakukan booking menu spesial
+- Pengguna dapat melakukan booking menu unik.
 - Sistem akan mengkonfirmasi ketersediaan dan memberikan notifikasi kepada pengguna.
 
 2. Modul Ulasan dan Rating - [Joshua Elisha Shalom Soedarmintarto]
