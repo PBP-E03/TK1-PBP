@@ -29,8 +29,8 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 - Memfasilitasi interaksi dan pertukaran informasi antar pengguna.
 
 4. Modul Wishlist - [Nafisa Arrasyida]
-- Pengguna dapat menambahkan steakhouse, menu, atau produk tertentu ke dalam daftar wishlist mereka untuk disimpan dan diakses di lain waktu.
-- Sistem memungkinkan pengguna melihat wishlist yang tersimpan dan menghapus item dari wishlist jika tidak lagi diinginkan.
+- Pengguna dapat menambahkan steakhouse, menu, atau produk tertentu ke dalam daftar wishlist sesuai kategori yang pengguna buat, mereka untuk disimpan dan diakses di lain waktu.
+- Sistem memungkinkan pengguna melihat wishlist yang tersimpan, menghapus item dari wishlist jika tidak lagi diinginkan, dan mengubah lokasi kategori item.
 - Modul ini membantu pengguna menyimpan pilihan favorit mereka untuk direncanakan atau dipertimbangkan di masa mendatang. 
 
 5. Modul Preference Form - [Danniel]
