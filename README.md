@@ -24,9 +24,9 @@ Deskripsi: Steve adalah sebuah website yang dirancang untuk membantu pengguna me
 - Memungkinkan pengguna untuk melihat ulasan terbaru dan terpopuler.
 
 3. Modul Forum Diskusi - [Athallah Wibowo]
-- Pengguna dapat berdiskusi dengan anggota lain mengenai topik seputar steakhouse, menu, dan pengalaman kuliner.
-- Fitur meliputi pembuatan topik baru, komentar, dan like/dislike.
-- Memfasilitasi interaksi dan pertukaran informasi antar pengguna.
+- Pengguna dapat berdiskusi dengan admin dan sesama anggota lain mengenai topik seputar steakhouse dan menu.
+- Fitur meliputi pembuatan komentar, dan pemperbarui komentar.
+- Memfasilitasi interaksi dan pertukaran informasi antar pengguna dan admin.
 
 4. Modul Wishlist - [Nafisa Arrasyida]
 - Pengguna dapat menambahkan steakhouse, menu, atau produk tertentu ke dalam daftar wishlist sesuai kategori yang pengguna buat, mereka untuk disimpan dan diakses di lain waktu.
