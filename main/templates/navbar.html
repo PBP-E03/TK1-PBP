@@ -15,6 +15,9 @@
         <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
           Contact
         </a>
+        <a href="{% url 'main:user_logout' %}" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
+          Logout
+        </a>
       </div>
       <div class="md:hidden flex items-center">
         <button class="mobile-menu-button">
@@ -37,6 +40,9 @@
         </a>
         <a href="#" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">
           Contact
+        </a>
+        <a href="{% url 'main:user_logout' %}" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">
+          Logout
         </a>
     </div>
   </div>
