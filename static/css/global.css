@@ -1,0 +1,49 @@
+/* Ensure your body or login page background image is styled here */
+#login-page {
+    background-image: url('../image/login_sign_walp.jpg'); /* Use the correct path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+/* Style for the login box */
+.login-box {
+    background-color: rgba(255, 255, 255, 0.5); /* More transparent white */
+    backdrop-filter: blur(15px); /* Increased blur for depth effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow for floating effect */
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out; /* Smooth transition on hover */
+}
+
+/* Hover effect for login box */
+.login-box:hover {
+    transform: translateY(-10px); /* Moves the box slightly up on hover */
+}
+
+/* Adjust the submit button to stand out */
+button {
+    background-color: #e3342f; /* Red color */
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-color: #cc1f1a; /* Darker red on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adds shadow on hover */
+}
+
+#register-page {
+    background-image: url('../image/login_sign_walp.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh; /* Ensure the container takes full height */
+}

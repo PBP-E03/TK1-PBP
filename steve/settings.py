@@ -30,6 +30,14 @@ DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danniel-steve.pbp.cs.ui.ac.id", "http://pbp.cs.ui.ac.id/danniel/steve", "https://pbp.cs.ui.ac.id/danniel/steve"]
 
+# settings.py
+STATIC_URL = '/static/'
+
+# Optional: If your static files are in a custom directory, include this
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# In production, you will need to configure STATIC_ROOT, but for development, STATICFILES_DIRS is enough
+
 
 # Application definition
 
