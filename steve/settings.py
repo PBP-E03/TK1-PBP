@@ -30,14 +30,6 @@ DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danniel-steve.pbp.cs.ui.ac.id", "http://pbp.cs.ui.ac.id/danniel/steve", "https://pbp.cs.ui.ac.id/danniel/steve"]
 
-# settings.py
-STATIC_URL = '/static/'
-
-# Optional: If your static files are in a custom directory, include this
-STATICFILES_DIRS = [BASE_DIR / "static"]
-
-# In production, you will need to configure STATIC_ROOT, but for development, STATICFILES_DIRS is enough
-
 
 # Application definition
 
@@ -126,8 +118,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_URL = '/static/'
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
