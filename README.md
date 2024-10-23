@@ -64,4 +64,4 @@ Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Da
 - Dapat mengatur dan melihat reservasi yang dibuat di steakhouse.
 - Dapat melihat laporan statistik.
 
-#### Link aplikasi: https://danniel-steve.pbp.cs.ui.ac.id/
+#### Link aplikasi: http://danniel-steve.pbp.cs.ui.ac.id/
