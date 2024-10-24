@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block meta %}
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
 <title>Steve - Dashboard</title>
 {% endblock meta %}
 
@@ -28,41 +29,112 @@
 
     <!-- Reservation Grid Section -->
     <section class="container mx-auto my-8">
-        <h2 class="text-3xl font-bold text-center text-red-500 mb-8">Reserve a Couple's Table</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Couple Seating Option 1 -->
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h3 class="text-xl font-bold mb-4">Romantic Spot</h3>
-                <p class="text-gray-600 mb-4">Perfect for a candlelit dinner.</p>
-                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Reserve</button>
-            </div>
-
-            <!-- Couple Seating Option 2 -->
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h3 class="text-xl font-bold mb-4">Window View</h3>
-                <p class="text-gray-600 mb-4">Enjoy a beautiful cityscape while dining.</p>
-                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Reserve</button>
-            </div>
-
-            <!-- Couple Seating Option 3 -->
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h3 class="text-xl font-bold mb-4">Private Booth</h3>
-                <p class="text-gray-600 mb-4">Cozy and private for an intimate meal.</p>
-                <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Reserve</button>
-            </div>
-
-            <!-- Add more seating options if needed -->
-        </div>
+        <div id="restaurant_cards"></div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-primary-red text-black text-center py-4">
+    {% comment %} <footer class="bg-primary-red text-black text-center py-4">
         <p>&copy; 2024 Steve SteakHouse. All rights reserved.</p>
-    </footer>
+    </footer> {% endcomment %}
 
     <!-- JavaScript for Form Submission -->
     <script>
+        
+        async function getRestaurants(){
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+        
+        async function refreshRestaurants() {
+            document.getElementById("restaurant_cards").innerHTML = "";
+            document.getElementById("restaurant_cards").className = "";
+            const restaurants = await getRestaurants();
+            let classNameString = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
+            let htmlString = "";
 
+            restaurants.forEach((restaurant) => {
+                const name = DOMPurify.sanitize(restaurant.fields.name);
+                const location = DOMPurify.sanitize(restaurant.fields.location);
+                const rating = DOMPurify.sanitize(restaurant.fields.rating);
+                const price = DOMPurify.sanitize(restaurant.fields.price);
+                htmlString += `
+                <div class="restaurant-card p-6 bg-white shadow-lg rounded-lg hover:shadow-xl transition duration-300 ease-in-out">
+                    <!-- Restaurant Details -->
+                    <h3 class="text-2xl font-bold mb-2">${name}</h3>
+                    <p class="text-gray-600 mb-2"><i class="fas fa-map-marker-alt text-red-500"></i> ${location} </p>
+                    <p class="text-gray-600 mb-2"><i class="fas fa-star text-yellow-400"></i> ${rating} / 5</p>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-dollar-sign text-green-500"></i> Price: Rp.${price}</p>
+                    
+                    <!-- Superuser Buttons -->
+                    {% if user.is_superuser %}
+                        <div class="flex justify-end space-x-4 mt-4">
+                            <!-- Edit Button -->
+                            <a href="" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Edit</a>
+                            <!-- Delete Button -->
+                            <form method="POST" action="" onsubmit="return confirm('Are you sure you want to delete this restaurant?');">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Delete</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                `
+            });
+            document.getElementById("restaurant_cards").className = classNameString;
+            document.getElementById("restaurant_cards").innerHTML = htmlString; 
+            /* document.getElementById("product_entry_cards").innerHTML = "";
+            document.getElementById("product_entry_cards").className = "";
+            const productEntries = await getProductEntries();
+            let htmlString = "";
+            let classNameString = "";
+
+            if (productEntries.length === 0) {
+                classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+                htmlString = `
+                <div class="bg-white shadow-lg rounded-lg p-6 text-center w-full flex flex-col items-center justify-center h-full">
+                    <img src="{% static 'image/Sad.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+                    <p class="text-xl font-medium text-gray-700">No products available.</p>
+                    <p class="text-gray-500 mt-2">Please check back later!</p>
+                </div>
+                `;
+            } else {
+                classNameString = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"; // Ensure proper grid class here
+                productEntries.forEach((item) => {
+                    const name = DOMPurify.sanitize(item.fields.name);
+                    const price = DOMPurify.sanitize(item.fields.price);
+                    const description = DOMPurify.sanitize(item.fields.description);
+                    htmlString += `
+                    <div class="relative break-inside-avoid w-72">
+                        <div class="bg-blue-50 shadow-lg rounded-lg mb-6 flex flex-col border-2 border-blue-300 transition-transform duration-300 transform hover:scale-105">
+                            <div class="bg-blue-200 text-gray-800 p-4 rounded-t-lg border-b-2 border-blue-300">
+                                <h3 class="font-bold text-xl mb-1 overflow-hidden text-ellipsis whitespace-nowrap">${name}</h3>
+                                <p class="text-gray-600">${price} Rupiah</p>
+                            </div>
+                            <div class="p-4 flex-grow">
+                                <p class="font-semibold text-lg mb-2">Description</p>
+                                <p class="text-gray-700 mb-2 h-16 overflow-hidden overflow-ellipsis">${description}</p>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 right-4 flex space-x-2">
+                            <a href="/edit-product/${item.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                            </a>
+                            <a href="/delete-product/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+            document.getElementById("product_entry_cards").className = classNameString;
+            document.getElementById("product_entry_cards").innerHTML = htmlString; */
+        }
+        refreshRestaurants();
+  
         document.getElementById('reservationForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const steakhouse = document.getElementById('steakhouse').value;
