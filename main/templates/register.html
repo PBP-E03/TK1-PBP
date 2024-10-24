@@ -25,17 +25,16 @@
             <button type="submit" class="w-full bg-red-500 text-white py-2 sm:py-3 rounded-lg hover:bg-red-600 transition duration-300">Register</button>
        
         {% if form.errors %}
-        <div class="error-messages">
-            <ul>
-            {% for field, errors in form.errors.items %}
-                {% for error in errors %}
-                <li>{{ field }}: {{ error }}</li>
+            <div class="error-messages bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4">
+                <ul class="list-disc pl-5">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            </ul>
-        </div>
-        {% endif %}       
-        </form>
+                </ul>
+            </div>
+        {% endif %}
 
         <p class="text-center text-gray-600 mt-6">Already have an account? 
             <a href="{% url 'main:user_login' %}" class="text-red-500 hover:underline">Login</a>

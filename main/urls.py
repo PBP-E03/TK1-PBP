@@ -8,4 +8,5 @@ urlpatterns = [
     path('login/', user_login, name='user_login'),
     path('logout/', user_logout, name='user_logout'),
     path('register/', user_register, name='user_register'),
+    path('show-json/', show_json, name='show_json'),
 ]

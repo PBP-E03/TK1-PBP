@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
+# Models
+from resto.models import Restaurant
+
 # Serializer
 from django.core import serializers
 
@@ -19,11 +22,15 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
+from django.http import JsonResponse
 
-# Create your views here.
 @login_required(login_url='main:user_login')
 def main_page(request):
-    return render(request, 'main_page.html')
+    # restaurants = Restaurant.objects.all()
+    context = {
+        'user' : request.user,
+    }
+    return render(request, 'main_page.html', context)
 
 def user_login(request):
     if request.method == 'POST':
@@ -59,3 +66,7 @@ def user_logout(request):
     response = HttpResponseRedirect(reverse('main:user_login'))
     response.delete_cookie('last_login')
     return response
+
+def show_json(request):
+    restaurants = Restaurant.objects.all()
+    return HttpResponse(serializers.serialize("json", restaurants), content_type="application/json")
