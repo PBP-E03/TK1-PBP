@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
+#Form
+from main.forms import RestaurantForm
+
 # Models
 from resto.models import Restaurant
 
@@ -37,6 +40,18 @@ def delete_resto(request, id):
     restaurant = Restaurant.objects.get(id=id)
     restaurant.delete()
     return redirect('main:main_page')
+
+def edit_resto(request, id):
+    restaurant = Restaurant.objects.get(id = id)
+
+    form = RestaurantForm(request.POST or None, instance=restaurant)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:main_page'))
+
+    context = {'form': form}
+    return render(request, "edit_resto.html", context)
 
 
 # Auth

@@ -10,5 +10,6 @@ urlpatterns = [
     path('register/', user_register, name='user_register'),
     path('show-json/', show_json, name='show_json'),
     
+    path('edit-resto/<int:id>/', edit_resto, name='edit_resto'),
     path('delete-resto/<int:id>/', delete_resto, name='delete_resto'),
 ]
