@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout/', user_logout, name='user_logout'),
     path('register/', user_register, name='user_register'),
     path('show-json/', show_json, name='show_json'),
+    
+    path('delete-resto/<int:id>/', delete_resto, name='delete_resto'),
 ]
