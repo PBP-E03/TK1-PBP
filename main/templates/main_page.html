@@ -9,23 +9,31 @@
 {% block content %}
     {% include 'navbar.html' %}
 
-    <!-- Space between Navbar and Search -->
     <section class="container mx-auto mt-24">
         <div class="flex flex-col items-center">
             <h1 class="text-2xl font-bold mb-8">Find and Reserve a Table</h1>
-            <!-- Google-style Search -->
-            <div class="w-full max-w-2xl mb-12"> <!-- Added margin-bottom for space -->
+            
+            <!-- Centered Search Bar -->
+            <div class="w-full max-w-2xl mb-6"> 
                 <form id="reservationForm" class="flex items-center bg-white shadow-md rounded-full overflow-hidden p-2">
-                    <!-- Steakhouse Search Input -->
                     <input type="text" id="steakhouse" class="flex-grow p-3 text-lg focus:outline-none focus:ring-0 border-none" placeholder="Search Steakhouse...">
-                    <!-- Search Button -->
                     <button type="submit" class="ml-3 bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition">
                         Search
                     </button>
                 </form>
             </div>
+
+            <!-- Centered Add Restaurant Button (Only for Superuser) -->
+            {% if user.is_superuser %}
+                <div class="w-full max-w-2xl flex justify-center">
+                    <a href="{% url 'main:add_resto' %}" class="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition">
+                        + Add Restaurant
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </section>
+
 
     <!-- Modal Container -->
     <div id="descriptionModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">

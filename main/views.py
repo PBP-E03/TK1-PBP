@@ -53,6 +53,15 @@ def edit_resto(request, id):
     context = {'form': form}
     return render(request, "edit_resto.html", context)
 
+def add_resto(request):
+    form = RestaurantForm(request.POST or None)
+    
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:main_page')
+
+    context = {'form': form}
+    return render(request, "create_resto.html", context)
 
 # Auth
 def user_login(request):
