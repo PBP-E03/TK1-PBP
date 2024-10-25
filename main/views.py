@@ -32,6 +32,14 @@ def main_page(request):
     }
     return render(request, 'main_page.html', context)
 
+# Product Management
+def delete_resto(request, id):
+    restaurant = Restaurant.objects.get(id=id)
+    restaurant.delete()
+    return redirect('main:main_page')
+
+
+# Auth
 def user_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
