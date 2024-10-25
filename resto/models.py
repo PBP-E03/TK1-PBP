@@ -15,6 +15,6 @@ class Restaurant(models.Model):
         default=0.0,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
     )
-    description = models.TextField(default= "Steak house with a variety of dishes")
+    description = models.TextField(default= "Steak house with a variety of dishes and a great view of the city")
     opening_time = models.TimeField(default="07:00:00")
     closing_time = models.TimeField(default = "22:00:00") 
