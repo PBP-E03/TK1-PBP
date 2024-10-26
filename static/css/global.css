@@ -47,3 +47,9 @@ button:hover {
     background-attachment: fixed;
     min-height: 100vh; /* Ensure the container takes full height */
 }
+
+.truncate {
+    overflow: hidden;       /* Hides the overflow text */
+    white-space: nowrap;    /* Prevents text from wrapping to the next line */
+    text-overflow: ellipsis; /* Shows ellipsis (...) for overflow text */
+}
