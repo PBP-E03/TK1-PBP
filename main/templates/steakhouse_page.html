@@ -18,6 +18,48 @@
         <p class="text-gray-600"><strong>Open:</strong> {{ steakhouse.opening_time }} - {{ steakhouse.closing_time }}</p>
     </div>
 
+    <!-- Reservation Form -->
+    {% if user.is_authenticated %}
+        <div class="mb-8 p-6 bg-white shadow-lg rounded-lg">
+            <h2 class="text-3xl font-bold mb-4 text-blue-600">Make a Reservation</h2>
+            <form action="{% url 'main:make_reservation' steakhouse.id %}" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition">Reserve</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="mb-4 p-4 bg-yellow-100 rounded-lg">
+            <p>Please <a href="{% url 'login' %}" class="text-blue-500 font-bold">login</a> to make a reservation.</p>
+        </div>
+    {% endif %}
+
+    <!-- User Reservations -->
+    {% if reservations %}
+        <div class="mt-8">
+            <h2 class="text-3xl font-bold mb-4 text-blue-600">Your Reservations</h2>
+            {% for reservation in reservations %}
+                <div class="bg-white shadow-lg rounded-lg p-4 mb-4">
+                    <p><strong>Date:</strong> {{ reservation.date }}</p>
+                    <p><strong>Time:</strong> {{ reservation.time }}</p>
+                    <p><strong>Guests:</strong> {{ reservation.number_of_guests }}</p>
+                    <p><strong>Special Request:</strong> {{ reservation.special_request }}</p>
+                    {% if reservation.status == 'active' %}
+                        <button onclick="completeReservation({{ reservation.id }})" 
+                                class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition">
+                            Complete Reservation
+                        </button>
+                    {% else %}
+                        <span class="text-gray-500">Completed</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500">No reservations found.</p>
+    {% endif %}
+</div>
+
     <!-- Reviews Section -->
     <div class="mt-8">
         <h2 class="text-3xl font-bold mb-4 text-blue-600">Reviews</h2>
@@ -186,5 +228,23 @@
     function closeDeleteModal() {
         deleteModal.classList.add('hidden');
     }
+
+    async function completeReservation(reservationId) {
+        try {
+            const response = await fetch(`{% url 'main:complete_reservation' 999999 %}`.replace('999999', reservationId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
 </script>
 {% endblock %}

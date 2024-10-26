@@ -3,11 +3,12 @@ from django.http import HttpResponse
 import json
 
 #Form
-from main.forms import RestaurantForm
+from main.forms import RestaurantForm, ReservationForm
 
 # Models
 from resto.models import Restaurant
 from resto_rating.models import Review 
+from reservation.models import Reservation
 
 # Serializer
 from django.core import serializers
@@ -202,3 +203,52 @@ def delete_review(request, review_id):
         return JsonResponse({'error': 'Review not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+    
+# Code for resevation application
+@login_required(login_url='main:user_login')
+def make_reservation(request, restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+    
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.user = request.user
+            reservation.restaurant = restaurant
+            
+            # Cek apakah pengguna sudah memiliki reservasi aktif di restoran ini
+            if Reservation.objects.filter(user=request.user, restaurant=restaurant, status='active').exists():
+                messages.error(request, 'Anda sudah memiliki reservasi aktif di restoran ini. Selesaikan reservasi sebelumnya untuk membuat yang baru.')
+                return redirect('main:steakhouse_page', pk=restaurant.id)
+            
+            reservation.save()
+            messages.success(request, 'Reservasi berhasil dibuat!')
+            return redirect('main:steakhouse_page', pk=restaurant.id)
+    else:
+        form = ReservationForm()
+
+    context = {
+        'form': form,
+        'restaurant': restaurant,
+    }
+    return render(request, 'make_reservation.html', context)
+
+@login_required(login_url='main:user_login')
+def complete_reservation(request, reservation_id):
+    try:
+        reservation = Reservation.objects.get(id=reservation_id, user=request.user)
+        reservation.status = 'completed'
+        reservation.save()
+        messages.success(request, 'Reservasi telah diselesaikan.')
+    except Reservation.DoesNotExist:
+        messages.error(request, 'Reservasi tidak ditemukan atau Anda tidak memiliki akses.')
+
+    return redirect('main:steakhouse_page')
+
+@login_required(login_url='main:user_login')
+def user_reservations(request):
+    reservations = Reservation.objects.filter(user=request.user)
+    context = {
+        'reservations': reservations,
+    }
+    return render(request, 'steakhouse_page.html', context) 

@@ -19,4 +19,8 @@ urlpatterns = [
     path('edit_review/<int:review_id>/', edit_review, name='edit_review'),
     path('delete_review/<int:review_id>/', delete_review, name='delete_review'),
     path('search/', search_restaurants, name='search_restaurants'),
+
+    path('reservation/make/<int:restaurant_id>/', make_reservation, name='make_reservation'),
+    path('reservation/complete/<int:reservation_id>/', complete_reservation, name='complete_reservation'),
+    path('reservations/', user_reservations, name='user_reservations'),
 ]
