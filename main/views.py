@@ -26,6 +26,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
 from django.http import JsonResponse
+from django.http import HttpResponseBadRequest
 
 @login_required(login_url='main:user_login')
 def main_page(request):
@@ -34,6 +35,35 @@ def main_page(request):
         'user' : request.user,
     }
     return render(request, 'main_page.html', context)
+
+def search_restaurants(request):
+    query = request.GET.get('q', '').strip()
+    
+    # Validate input length and content
+    if len(query) > 100:  # Limit input length to prevent overly long queries
+        return HttpResponseBadRequest("Invalid query length")
+    
+    if query:
+        # Filter restaurants by name, making sure the query is secure by using Django ORM methods
+        restaurants = Restaurant.objects.filter(name__icontains=query)
+    else:
+        restaurants = Restaurant.objects.all()
+    
+    results = [
+        {
+            'id': restaurant.id,
+            'name': restaurant.name,
+            'location': restaurant.location,
+            'rating': restaurant.rating,
+            'description': restaurant.description,
+            'price': restaurant.price,
+            'opening_time': restaurant.opening_time,
+            'closing_time': restaurant.closing_time,
+        }
+        for restaurant in restaurants
+    ]
+    
+    return JsonResponse({'restaurants': results})
 
 # Product Management
 def delete_resto(request, id):
