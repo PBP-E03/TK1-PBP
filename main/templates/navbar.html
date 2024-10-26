@@ -12,7 +12,7 @@
         <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
           Reservation
         </a>
-        <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
+        <a href="#contact" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
           Contact
         </a>
         <a href="{% url 'main:user_logout' %}" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
@@ -34,7 +34,7 @@
       <span class="block text-krem py-2 mr-2">Welcome, {{user}}</span>
       <a href="{% url 'main:main_page' %}" class="block text-krem py-2">Home</a>
       <a href="#" class="block text-krem py-2">Reservation</a>
-      <a href="#" class="block text-krem py-2">Contact</a>
+      <a href="#contact" class="block text-krem py-2">Contact</a>
       <a href="{% url 'main:user_logout' %}" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">Logout</a>
     </div>
   </div>
