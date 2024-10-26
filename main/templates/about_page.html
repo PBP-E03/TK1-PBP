@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Steve - About Us</title>
+{% endblock meta %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+
+    <section class="container mx-auto mt-24">
+        <div class="flex flex-col items-center text-center space-y-12">
+            <!-- Application Description -->
+            <div class="w-full max-w-3xl bg-gray-50 shadow-md rounded-lg p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">What Steve Offers</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Steve is designed for steak enthusiasts who want to explore Jakarta’s vibrant steakhouse scene. Users can search for steakhouses based on location, price, rating, 
+                    and special menu items. Our platform also provides a space for community engagement, where users can discuss their favorite dishes, share experiences, and connect 
+                    with other steak lovers.
+                </p>
+            </div>
+
+            <!-- Team Members Section -->
+            <div class="w-full max-w-3xl">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Meet the Team</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Team Member Card 1 -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                        <h3 class="text-xl font-semibold text-gray-800">Danniel</h3>
+                        <p class="text-gray-600">2306152090</p>
+                        <p class="mt-2 text-gray-500">Modul Daftar Resto</p>
+                    </div>
+
+                    <!-- Team Member Card 2 -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                        <h3 class="text-xl font-semibold text-gray-800">Joshua Elisha Shalom Soedarmintarto</h3>
+                        <p class="text-gray-600">2306275001</p>
+                        <p class="mt-2 text-gray-500">Review Resto</p>
+                    </div>
+
+                    <!-- Team Member Card 3 -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                        <h3 class="text-xl font-semibold text-gray-800">Anita Khoirun Nisa</h3>
+                        <p class="text-gray-600">2306152273</p>
+                        <p class="mt-2 text-gray-500">Reservasi</p>
+                    </div>
+
+                    <!-- Team Member Card 4 -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                        <h3 class="text-xl font-semibold text-gray-800">Athallah Wibowo</h3>
+                        <p class="text-gray-600">2306275576</p>
+                        <p class="mt-2 text-gray-500">Forum Diskusi</p>
+                    </div>
+
+                    <!-- Team Member Card 5 -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                        <h3 class="text-xl font-semibold text-gray-800">Nafisa Arrasyida</h3>
+                        <p class="text-gray-600">2306226391</p>
+                        <p class="mt-2 text-gray-500">Wishlist</p>
+                    </div>
+
+                    <!-- Team Member Card 6 -->
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                        <h3 class="text-xl font-semibold text-gray-800">Puti Raisssa</h3>
+                        <p class="text-gray-600">Kakak Asdos PBP</p>
+                        <p class="mt-2 text-gray-500">Pengawas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id = "contact" class="bg-black text-white py-12 mt-16">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center md:items-start space-y-8 md:space-y-0 text-center md:text-left">
+            
+            <!-- About Section -->
+            <div class="md:w-2/3 space-y-4">
+                <h2 class="text-2xl font-bold">About Steve</h2>
+                <p class="text-gray-400">
+                    Steve is a platform dedicated to helping steak lovers find and reserve tables at the best steakhouses in Jakarta. Our goal is to make it easy for users to search, review, and book reservations at their favorite spots.
+                </p>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="md:w-1/3 space-y-4">
+                <h2 class="text-2xl font-bold">Quick Links</h2>
+                <nav class="flex flex-col space-y-2 text-gray-400">
+                    <a href="/about" class="hover:text-red-500 transition duration-300">About Us</a>
+                    <a href="/reservations" class="hover:text-red-500 transition duration-300">Reservations</a>
+                </nav>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="md:w-1/3 space-y-4">
+                <h2 class="text-2xl font-bold">Contact Us</h2>
+                <p class="text-gray-400">Have any questions or feedback? Reach out to us!</p>
+                <a href="mailto:angdanniel8@gmail.com" class="inline-block bg-red-500 text-white font-semibold py-2 px-4 rounded-full hover:bg-red-600 transition duration-300">
+                    Email Us
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="mt-12 text-center text-gray-500 border-t border-gray-700 pt-4">
+            <p>&copy; 2024 Steve. All rights reserved.</p>
+        </div>
+    </footer>
+
+{% endblock content %}

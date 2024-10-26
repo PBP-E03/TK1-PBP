@@ -39,6 +39,9 @@ def main_page(request):
     }
     return render(request, 'main_page.html', context)
 
+def about_page(request):
+    return render(request, 'about_page.html')
+
 def search_restaurants(request):
     query = request.GET.get('q', '').strip()
     
