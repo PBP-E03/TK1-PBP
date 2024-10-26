@@ -10,7 +10,7 @@ class Restaurant(models.Model):
     price = models.IntegerField(validators=[MinValueValidator(1)])
     location = models.CharField(max_length=100)
     rating = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)]
+        validators=[MinValueValidator(1), MaxValueValidator(5)], default = 0
     )
     description = models.TextField(default= "Steak house with a variety of dishes and a great view of the city")
     opening_time = models.TimeField(default="07:00:00")
