@@ -6,7 +6,7 @@
       </div>
       <div class="hidden md:flex items-center">
         <span class="text-krem py-2 px-4 mr-2">Welcome, {{user}}</span>
-        <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
+        <a href="{% url 'main:main_page' %}" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
           Home  
         </a>
         <a href="#" class="hover:bg-red-700 text-krem py-2 px-4 transition rounded duration-300 mr-2">
@@ -32,7 +32,7 @@
   <div class="mobile-menu hidden md:hidden px-4 w-full transition-all duration-300 ease-in-out">
     <div class="pt-2 pb-3 space-y-1">
       <span class="block text-krem py-2 mr-2">Welcome, {{user}}</span>
-      <a href="#" class="block text-krem py-2">Home</a>
+      <a href="{% url 'main:main_page' %}" class="block text-krem py-2">Home</a>
       <a href="#" class="block text-krem py-2">Reservation</a>
       <a href="#" class="block text-krem py-2">Contact</a>
       <a href="{% url 'main:user_logout' %}" class="block text-center bg-red-500 hover:bg-red-700 text-krem font-bold py-2 transition rounded duration-300">Logout</a>

@@ -59,6 +59,7 @@ def search_restaurants(request):
             'location': restaurant.location,
             'rating': restaurant.rating,
             'description': restaurant.description,
+            'special_menu': restaurant.special_menu,
             'price': restaurant.price,
             'opening_time': restaurant.opening_time,
             'closing_time': restaurant.closing_time,
@@ -158,12 +159,19 @@ def add_review(request, restaurant_id):
         rating = request.POST.get('rating')
         comment = request.POST.get('comment')
         
+        # Create the review
         Review.objects.create(
             restaurant=restaurant,
             user=request.user,
             rating=rating,
             comment=comment
         )
+        
+        # Update the restaurant's rating
+        reviews = Review.objects.filter(restaurant=restaurant)
+        total_rating = sum(review.rating for review in reviews)
+        restaurant.rating = total_rating / reviews.count()
+        restaurant.save()
         
         return redirect('main:steakhouse_page', pk=restaurant_id)
     
@@ -181,6 +189,13 @@ def edit_review(request, review_id):
         review.rating = data.get('rating')
         review.comment = data.get('comment')
         review.save()
+        
+        # Update the restaurant's rating
+        restaurant = review.restaurant
+        reviews = Review.objects.filter(restaurant=restaurant)
+        total_rating = sum(r.rating for r in reviews)
+        restaurant.rating = total_rating / reviews.count()
+        restaurant.save()
         
         return JsonResponse({'message': 'Review updated successfully'})
     except Review.DoesNotExist:
