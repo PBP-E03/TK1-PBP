@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+import json
 
 #Form
 from main.forms import RestaurantForm
 
 # Models
 from resto.models import Restaurant
+from resto_rating.models import Review 
 
 # Serializer
 from django.core import serializers
@@ -26,13 +28,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
 from django.http import JsonResponse
-from django.http import HttpResponseBadRequest
 
 @login_required(login_url='main:user_login')
 def main_page(request):
-    # restaurants = Restaurant.objects.all()
+    restaurants = Restaurant.objects.all()
     context = {
         'user' : request.user,
+        'restaurants' : restaurants,
     }
     return render(request, 'main_page.html', context)
 
@@ -132,3 +134,70 @@ def user_logout(request):
 def show_json(request):
     restaurants = Restaurant.objects.all()
     return HttpResponse(serializers.serialize("json", restaurants), content_type="application/json")
+
+def steakhouse_page(request, pk):
+    steakhouse = Restaurant.objects.get(id=pk)
+    reviews = Review.objects.filter(restaurant=steakhouse)
+    
+    user_has_reviewed = False
+    if request.user.is_authenticated:
+        user_has_reviewed = Review.objects.filter(restaurant=steakhouse, user=request.user).exists()
+    
+    context = {
+        'steakhouse': steakhouse,
+        'reviews': reviews,
+        'user_has_reviewed': user_has_reviewed,
+    }
+    return render(request, 'steakhouse_page.html', context)
+
+# Code for resto_rating application
+def add_review(request, restaurant_id):
+    if request.method == 'POST':
+        restaurant = Restaurant.objects.get(id=restaurant_id)
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        
+        Review.objects.create(
+            restaurant=restaurant,
+            user=request.user,
+            rating=rating,
+            comment=comment
+        )
+        
+        return redirect('main:steakhouse_page', pk=restaurant_id)
+    
+    return redirect('main:steakhouse_page', pk=restaurant_id)
+
+@require_POST
+def edit_review(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)
+        
+        if request.user != review.user and not request.user.is_superuser:
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        
+        data = json.loads(request.body)
+        review.rating = data.get('rating')
+        review.comment = data.get('comment')
+        review.save()
+        
+        return JsonResponse({'message': 'Review updated successfully'})
+    except Review.DoesNotExist:
+        return JsonResponse({'error': 'Review not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+@require_POST
+def delete_review(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)
+        
+        if request.user != review.user and not request.user.is_superuser:
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        
+        review.delete()
+        return JsonResponse({'message': 'Review deleted successfully'})
+    except Review.DoesNotExist:
+        return JsonResponse({'error': 'Review not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
