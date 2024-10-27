@@ -9,4 +9,4 @@ class WishlistItemForm(forms.ModelForm):
 class WishlistCategoryForm(forms.ModelForm):
     class Meta:
         model = WishlistCategory
-        fields = ['name', 'description']
+        fields = ['name']

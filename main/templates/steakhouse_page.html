@@ -145,7 +145,7 @@
     <div id="addToWishlistModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white rounded-lg p-6 w-96">
             <h2 class="text-lg font-bold mb-4">Add to Wishlist</h2>
-            <form id="addToWishlistForm" onsubmit="event.preventDefault(); addToWishlistHandler({{ steakhouse.id }});">
+            <form id="addToWishlistForm" onsubmit="event.preventDefault(); addToWishlistHandler({{ steakhouse.pk }});">
                 <div class="mb-4">
                     <label for="title" class="block text-gray-700">Title:</label>
                     <input type="text" id="title" name="title" class="form-input w-full border rounded-lg" required>

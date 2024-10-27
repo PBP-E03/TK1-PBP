@@ -6,7 +6,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class WishlistCategory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wishlistCategory")
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class WishlistItem(models.Model):

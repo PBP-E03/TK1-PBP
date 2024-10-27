@@ -235,8 +235,8 @@ def fetch_user_categories(request):
     return JsonResponse(list(categories), safe=False)
 
 @require_POST
-def add_to_wishlist(request, steakhouse_id):
-    restaurant = Restaurant.objects.get(id=steakhouse_id)
+def add_to_wishlist(request, restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
     user = request.user
 
     data = json.loads(request.body) 
