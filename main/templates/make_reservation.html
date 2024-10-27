@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mx-auto max-w-lg px-4 py-10">
-    <h1 class="text-4xl font-extrabold mb-8 text-center text-indigo-600">Reserve a Table at {{ steakhouse.name }}</h1>
+    <h1 class="text-4xl font-extrabold mb-8 text-center text-red-600">Reserve a Table at {{ steakhouse.name }}</h1>
     
     <!-- Check if the user is logged in -->
     {% if user.is_authenticated %}
@@ -44,14 +44,14 @@
                 <!-- Hidden field for status -->
                 <input type="hidden" name="status" value="active">
 
-                <button type="submit" class="w-full bg-indigo-500 text-white font-semibold py-3 rounded-lg hover:bg-indigo-600 transition duration-300 shadow-md focus:ring-4 focus:ring-indigo-300">
+                <button type="submit" class="w-full bg-red-500 text-white font-semibold py-3 rounded-lg hover:bg-red-600 transition duration-300 shadow-md focus:ring-4 focus:ring-red-300">
                     Confirm Reservation
                 </button>
             </form>
         </div>
     {% else %}
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg text-center mt-8">
-            <p class="text-lg">Please <a href="{% url 'login' %}" class="text-indigo-600 font-bold hover:underline">login</a> to make a reservation.</p>
+            <p class="text-lg">Please <a href="{% url 'login' %}" class="text-red-600 font-bold hover:underline">login</a> to make a reservation.</p>
         </div>
     {% endif %}
 </div>
