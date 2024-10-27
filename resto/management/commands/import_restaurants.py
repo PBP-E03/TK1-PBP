@@ -3,6 +3,7 @@ import csv
 from resto.models import Restaurant  # Adjust this if your model is in the main app
 
 class Command(BaseCommand):
+    
     help = 'Imports restaurant data from a CSV file'
 
     def add_arguments(self, parser):
