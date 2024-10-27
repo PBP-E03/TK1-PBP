@@ -7,6 +7,7 @@
 
 {% block content %}
 {% include 'navbar.html' %}
+<div id="successMessage" class="hidden text-center text-green-600 font-semibold my-4"> Reservation completed successfully. </div>
 <div class="container mx-auto px-4 py-8" style="padding-top: 70px; background-color: #f9f9f9;">
     <!-- Steakhouse Details -->
     <div class="mb-8 p-6 bg-white shadow-lg rounded-lg">
@@ -55,8 +56,20 @@
                                         aria-label="Complete reservation for {{ reservation.date }}">
                                     Complete Reservation
                                 </button>
+                                <button onclick="openEditReservationModal({{ reservation.id }})" 
+                                        class="bg-blue-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300">
+                                    Edit
+                                </button>
+                                <button onclick="openDeleteReservationModal({{ reservation.id }})" 
+                                        class="bg-red-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all duration-300">
+                                    Delete
+                                </button>
                             {% else %}
                                 <span class="text-gray-500 text-lg">Completed</span>
+                                <button onclick="moveToTrash({{ reservation.id }})" 
+                                        class="bg-gray-400 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-gray-500 transition-all duration-300">
+                                    Move to Trash
+                                </button>
                             {% endif %}
                             <span class="text-sm text-gray-500">{{ reservation.created_at|date:"M d, Y" }}</span>
                         </div>
@@ -64,8 +77,7 @@
                 {% endfor %}
             </div>
         </div>
-    {% endif %}
-    <div id="successMessage" class="hidden text-center text-green-600 font-semibold my-4"></div>
+        {% endif %}
 </div>
 
     <!-- Reviews Section -->
@@ -242,30 +254,27 @@
     button.innerHTML = "Completing...";
     button.disabled = true;
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-
     try {
         const response = await fetch("{% url 'main:complete_reservation' 999999 %}".replace("999999", reservationId), {
             method: 'POST',
             headers: {
-                'X-CSRFToken': csrfToken,
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
             }
         });
 
         if (response.ok) {
-            // Parse the JSON response to get the success message
             const data = await response.json();
             
-            // Display the success message
+            // Tampilkan pesan sukses
             const successMessage = document.getElementById('successMessage');
-            successMessage.textContent = data.message;
+            successMessage.textContent = DOMPurify.sanitize(data.message);
             successMessage.classList.remove('hidden');
 
-            // Remove the reservation card from the DOM
-            document.getElementById(reservation-${reservationId}).remove();
+            // Hapus elemen reservasi dari DOM
+            document.getElementById(`reservation-${reservationId}`).remove();
 
-            // Hide the message after 3 seconds
+            // Sembunyikan pesan setelah 3 detik
             setTimeout(() => {
                 successMessage.classList.add('hidden');
             }, 3000);
@@ -275,6 +284,80 @@
     } catch (error) {
         console.error("Error:", error);
         alert("There was an error completing the reservation. Please try again.");
+    } finally {
+        button.innerHTML = "Complete Reservation";
+        button.disabled = false;
+    }
+
+    function openEditReservationModal(reservationId) {
+    // Display the edit modal
+    editModal.classList.remove('hidden');
+    // Set up an event listener on the button to handle editing
+    document.getElementById('editReservationButton').addEventListener('click', async function() {
+        try {
+            const response = await fetch(`{% url 'main:edit_reservation' 999999 %}`.replace('999999', reservationId), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    // Include the required fields for editing here
+                })
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+    function openDeleteReservationModal(reservationId) {
+        // Display the delete modal
+        deleteModal.classList.remove('hidden');
+        // Set up an event listener on the button to handle deletion
+        document.getElementById('deleteReservationButton').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`{% url 'main:delete_reservation' 999999 %}`.replace('999999', reservationId), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function moveToTrash(reservationId) {
+        // Display a confirmation dialog if needed
+        if (!confirm("Are you sure you want to move this reservation to the trash?")) return;
+
+        // Move the reservation to the trash via an async request
+        (async function() {
+            try {
+                const response = await fetch(`{% url 'main:delete_reservation' 999999 %}`.replace('999999', reservationId), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })();
     }
 }
 
