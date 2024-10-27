@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'reservation',
     'wishlist',
     'discussion',
+    'forum_diskusi',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,6 @@ else:
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TIME_ZONE = 'Asia/Jakarta'
+USE_TZ = True
