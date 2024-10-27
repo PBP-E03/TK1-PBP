@@ -10,8 +10,8 @@ class Reservation(models.Model):
         ('completed', 'Completed'),
     ]
 
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    restaurant = models.ForeignKey(Restaurant, related_name='reservations', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='reservations', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     date = models.DateField(default=timezone.now)
     time = models.TimeField()
