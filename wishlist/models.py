@@ -13,4 +13,8 @@ class WishlistItem(models.Model):
     user = models.ForeignKey(User, related_name='wishlist', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     wishlistCategory = models.ForeignKey(WishlistCategory, on_delete=models.CASCADE, related_name="items")
+<<<<<<< HEAD
     created_at = models.DateTimeField(auto_now_add=True)
+=======
+    created_at = models.DateTimeField(auto_now_add=True)
+>>>>>>> 7dbd0c3b0f9c611c7e66aa5cb5564a48b1264a2d
