@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mx-auto px-4 mt-20">
+    <h1 class="text-3xl font-bold mb-6">Forum Diskusi</h1>
+    <a href="{% url 'forum_diskusi:post_create' %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-300">
+        Create New Post
+    </a>
+    <div class="mt-6">
+        {% for post in posts %}
+        <div class="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h2 class="text-2xl font-bold mb-2"><a href="{% url 'forum_diskusi:post_detail' post.pk %}" class="text-blue-500 hover:underline">{{ post.title }}</a></h2>
+            <p class="text-gray-700">{{ post.content|truncatechars:200 }}</p>
+            <div class="mt-4">
+                <span class="text-sm text-gray-600">By {{ post.author.username }} on {{ post.date_posted|date:"F j, Y, g:i a" }}</span> |
+                <span class="text-sm text-gray-600">Restaurant: {{ post.resto.name }}</span>
+            </div>
+            <div class="mt-4">
+                <span class="text-sm text-gray-600">Upvotes: {{ post.upvotes }} | Downvotes: {{ post.downvotes }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-500">No posts available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

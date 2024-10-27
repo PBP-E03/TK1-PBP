@@ -16,3 +16,6 @@ class Restaurant(models.Model):
     description = models.TextField(default= "Steak house with a variety of dishes and a great view of the city")
     opening_time = models.TimeField(default="07:00:00")
     closing_time = models.TimeField(default = "22:00:00") 
+
+    def __str__(self):
+        return self.name

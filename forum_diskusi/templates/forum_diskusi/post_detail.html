@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mx-auto px-4 mt-20">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg overflow-hidden mb-10">
+        <h1 class="text-3xl font-bold mb-4">{{ post.title }}</h1>
+        <p class="text-sm text-gray-600" style="font-size: 24px;">Restaurant: {{ post.resto.name }}</p>
+        <p class="text-gray-700 mb-4 mt-3">{{ post.content }}</p>
+        <div class="flex items-center space-x-4 mb-4">
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 vote-btn" data-vote="upvote">
+                Upvote
+            </button>
+            <span id="upvotes-{{ post.id }}">{{ post.upvotes }}</span>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 vote-btn" data-vote="downvote">
+                Downvote
+            </button>
+            <span id="downvotes-{{ post.id }}">{{ post.downvotes }}</span>
+        </div>
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-sm text-gray-600">By {{ post.author.username }} on {{ post.date_posted|date:"F j, Y, g:i a" }}</span>
+            {% if user == post.author %}
+            <div>
+                <a href="{% url 'forum_diskusi:post_update' post.pk %}" class="text-blue-500 hover:underline mr-2">Edit</a>
+                <a href="{% url 'forum_diskusi:post_delete' post.pk %}" class="text-red-500 hover:underline">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="mb-6">
+            <h2 class="text-xl font-bold mb-2">Comments</h2>
+            <div id="comments">
+                {% for comment in comments %}
+                <div class="bg-gray-100 p-4 rounded-lg mb-2">
+                    <strong>{{ comment.author.username }}</strong> says: {{ comment.content }}
+                    {% if user == comment.author %}
+                    <div class="mt-2">
+                        <a href="{% url 'forum_diskusi:comment_edit' comment.pk %}" class="text-blue-500 hover:underline mr-2">Edit</a>
+                        <a href="{% url 'forum_diskusi:comment_delete' comment.pk %}" class="text-red-500 hover:underline">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p class="text-gray-500">No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="mb-6">
+            <h3 class="text-lg font-bold mb-2">Add a Comment</h3>
+            <form method="post" action="{% url 'forum_diskusi:post_comment' post.id %}">
+                {% csrf_token %}
+                <textarea name="content" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Write your comment here..." required></textarea>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 mt-2">
+                    Post Comment
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include jQuery via CDN if not already included -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^GET|HEAD|OPTIONS|TRACE$/.test(settings.type)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $('.vote-btn').click(function() {
+        var $this = $(this);
+        var postId = '{{ post.id }}';
+        var voteType = $this.data('vote');
+        var url = voteType === 'upvote' ? "{% url 'forum_diskusi:post_upvote' post.id %}" : "{% url 'forum_diskusi:post_downvote' post.id %}";
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            success: function(response) {
+                if (response.error) {
+                    alert(response.error);
+                } else {
+                    $('#upvotes-' + postId).text(response.upvotes);
+                    $('#downvotes-' + postId).text(response.downvotes);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseJSON.error || 'You can only vote once or there was an error!');
+            }
+        });
+        return false; // Prevent page reload
+    });
+});
+</script>
+{% endblock %}
