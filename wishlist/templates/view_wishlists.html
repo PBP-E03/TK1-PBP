@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container mx-auto px-4 py-8" style="padding-top: 70px; background-color: #f9f9f9;">
+    <h1 class="text-4xl font-bold mb-4 text-blue-600">My Wishlists</h1>
+
+    {% if categories.exists or categorized_wishlists %}
+        <!-- Category Filter -->
+        <div class="mb-4">
+            <form method="GET" action="{% url 'wishlist:view_wishlists' %}">
+                <label for="category" class="text-gray-700">Filter by Category:</label>
+                <select name="category" id="category" class="form-select w-full">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if selected_category and selected_category.id == category.id %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2">Filter</button>
+            </form>
+        </div>
+
+        {% if categorized_wishlists %}
+            {% for category, items in categorized_wishlists.items %}
+                <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+                    <h2 class="text-2xl font-semibold mb-4">{{ category.name }}</h2>
+                    <p class="text-gray-700 mb-2">{{ category.description }}</p>
+                    <ul class="list-disc pl-5">
+                        {% for item in items %}
+                            <li class="mb-2">
+                                <h3 class="font-semibold">{{ item.title }}</h3>
+                                <p><strong>Restaurant:</strong> <a href="{% url 'main:steakhouse_page' item.restaurant.id %}">{{ item.restaurant.name }}</a></p>
+                            </li>
+                        {% empty %}
+                            <p>No items in this category.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <p class="text-gray-700">No wishlists available in the selected category.</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <p class="text-gray-700">You have no wishlists or categories yet. Start adding some!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

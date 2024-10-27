@@ -20,4 +20,6 @@ urlpatterns = [
     path('delete_review/<int:review_id>/', delete_review, name='delete_review'),
     path('search/', search_restaurants, name='search_restaurants'),
     path('about/', about_page, name='about_page'),
+    path('wishlist/add/<int:restaurant_id>/', add_to_wishlist, name='add_to_wishlist'),
+    path('fetch-user-categories/', fetch_user_categories, name='fetch_user_categories'),
 ]

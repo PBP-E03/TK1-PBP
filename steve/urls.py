@@ -21,4 +21,5 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('wishlist/', include(('wishlist.urls', 'wishlist'), namespace='wishlist')),  # Adding namespace here
 ]
