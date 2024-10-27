@@ -49,14 +49,13 @@ Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Da
 
 2. Pengguna login:
 - Memiliki semua akses yang dimiliki pengguna tidak login.
-- Dapat menulis ulasan dan memberikan rating pada steakhouse setelah proses reservasi berakhir.
+- Dapat menulis ulasan dan memberikan rating pada steakhouse.
 - Dapat berpartisipasi dalam forum diskusi (membuat topik baru dan berkomentar).
-- Dapat melakukan reservasi tempat dan memesan steak secara online.
+- Dapat melakukan reservasi tempat secara online.
 - Dapat melihat daftar reservasi yang telah dibuat atau masih berlangsung.
-- Dapat melihat riwayat reservasi yang sudah dilakukan.
 - Dapat melihat wishlist yang telat dibuat.
 - Dapat mengubah wishlist yang telah dibuat.
-- Dapat mencari daftar steakhouse yang sesuai dengan isi preference form.
+- Dapat mencari daftar steakhouse.
 
 3. Pengguna Admin:
 - Memiliki semua akses yang dimiliki pengguna login.
