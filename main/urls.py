@@ -21,4 +21,5 @@ urlpatterns = [
     path('search/', search_restaurants, name='search_restaurants'),
 
     path('forum_diskusi/', include('forum_diskusi.urls', namespace='forum_diskusi')),
+    path('about/', about_page, name='about_page'),
 ]

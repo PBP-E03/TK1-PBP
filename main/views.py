@@ -39,6 +39,9 @@ def main_page(request):
     }
     return render(request, 'main_page.html', context)
 
+def about_page(request):
+    return render(request, 'about_page.html')
+
 def search_restaurants(request):
     query = request.GET.get('q', '').strip()
     
@@ -99,6 +102,9 @@ def add_resto(request):
 
 # Auth
 def user_login(request):
+    # Redirect authenticated users to the main page
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('main:main_page'))
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -137,6 +143,10 @@ def show_json(request):
     restaurants = Restaurant.objects.all()
     return HttpResponse(serializers.serialize("json", restaurants), content_type="application/json")
 
+def show_json_by_id(request, id):
+    restaurant = Restaurant.objects.get(id=id)
+    return HttpResponse(serializers.serialize("json", restaurant), content_type="application/json")
+    
 def steakhouse_page(request, pk):
     steakhouse = Restaurant.objects.get(id=pk)
     reviews = Review.objects.filter(restaurant=steakhouse)
