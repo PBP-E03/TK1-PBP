@@ -3,7 +3,7 @@
 {% block content %}
 {% include 'navbar.html' %}
 <div class="container mx-auto px-4 py-8" style="padding-top: 70px; background-color: #ffff;">
-    <h1 class="text-4xl font-bold mb-4 text-blue-600">My Wishlists</h1>
+    <h1 class="text-4xl font-bold mb-4">My Wishlists</h1>
 
     {% if categories.exists or categorized_wishlists %}
         <!-- Category Filter -->
@@ -18,7 +18,7 @@
                         </option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2">Filter</button>
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg mt-2">Filter</button>
             </form>
         </div>
 
@@ -40,7 +40,7 @@
                         <div class="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between">
                             <div>
                                 <h3 class="text-xl font-semibold">{{ item.title }}</h3>
-                                <p><strong>Restaurant:</strong> <a href="{% url 'main:steakhouse_page' item.restaurant.id %}" class="text-blue-500 underline">{{ item.restaurant.name }}</a></p>
+                                <p><strong>Restaurant:</strong> <a href="{% url 'main:steakhouse_page' item.restaurant.id %}" class="text-red-500 underline">{{ item.restaurant.name }}</a></p>
                             </div>
                             <div class="mt-4 flex justify-end space-x-2">
                                 <!-- Edit Button -->
@@ -96,7 +96,7 @@
                 <label for="newCategory" class="block text-gray-700">New Category:</label>
                 <input type="text" id="newCategory" name="newCategory" class="form-input w-full border">
             </div>
-            <button id="editButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">Save Changes</button>
+            <button id="editButton" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition">Save Changes</button>
         </form>
     </div>
 </div>
