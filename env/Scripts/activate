@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\Perkuliahan Semester 3\TK1 PBP\TK1-PBP\env"
+VIRTUAL_ENV="C:\Users\athal\PBP KELOMPOK\TK1-PBP\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
