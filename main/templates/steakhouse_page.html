@@ -7,20 +7,79 @@
 
 {% block content %}
 {% include 'navbar.html' %}
+<div id="successMessage" class="hidden text-center text-green-600 font-semibold my-4"> Reservation completed successfully. </div>
 <div class="container mx-auto px-4 py-8" style="padding-top: 70px; background-color: #f9f9f9;">
     <!-- Steakhouse Details -->
     <div class="mb-8 p-6 bg-white shadow-lg rounded-lg">
-        <h1 class="text-4xl font-bold mb-4 text-blue-600">{{ steakhouse.name }}</h1>
+        <h1 class="text-4xl font-bold mb-4">{{ steakhouse.name }}</h1>
         <p class="text-gray-700">{{ steakhouse.description }}</p>
         <p class="text-gray-600"><strong>Location:</strong> {{ steakhouse.location }}</p>
         <p class="text-gray-600"><strong>Rating:</strong> {{ steakhouse.rating }} / 5</p>
         <p class="text-gray-600"><strong>Price:</strong> Rp.{{ steakhouse.price }}</p>
         <p class="text-gray-600"><strong>Open:</strong> {{ steakhouse.opening_time }} - {{ steakhouse.closing_time }}</p>
-    </div>
+
+        <!-- Reservation Form -->
+        <div class="mt-4 flex justify-end items-start">
+            {% if user.is_authenticated %}
+                <form action="{% url 'main:make_reservation' steakhouse.id %}" method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-red-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-red-600 transition-all duration-300 shadow-lg focus:ring-4 focus:ring-red-300">
+                        Reserve Now
+                    </button>
+                </form>
+            {% else %}
+                <div class="p-6 bg-yellow-100 rounded-lg text-center">
+                    <p class="text-lg font-medium">
+                        Please <a href="{% url 'login' %}" class="text-red-500 underline font-bold">login</a> to make a reservation.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Messages -->
+        <div class="container mx-auto my-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'error' %}text-red-500{% else %}text-green-500{% endif %} text-center font-semibold">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- User Reservations -->
+        {% if not reservations %}
+        <p class="text-center text-lg text-gray-500 mt-10">No reservations found.</p>
+        {% else %}
+        <div class="container mx-auto max-w-2xl my-10">
+            <h2 class="text-4xl font-extrabold mb-6 text-red-600 text-center">Your Reservations</h2>
+            <div class="space-y-4">
+                {% for reservation in reservations %}
+                    {% if reservation.status == 'active' %}  <!-- Only display active reservations -->
+                        <div id="reservation-{{ reservation.id }}" class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-red-600">
+                            <p class="text-xl font-semibold text-gray-800"><strong>Date:</strong> {{ reservation.date }}</p>
+                            <p class="text-xl font-semibold text-gray-800"><strong>Time:</strong> {{ reservation.time }}</p>
+                            <p class="text-xl font-semibold text-gray-800"><strong>Guests:</strong> {{ reservation.number_of_guests }}</p>
+                            <p class="text-lg text-gray-700"><strong>Special Request:</strong> {{ reservation.special_request }}</p>
+                            <div class="mt-4 flex justify-between">
+                                <button onclick="completeReservation({{ reservation.id }})" 
+                                        class="bg-green-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-green-600 transition-all duration-300 focus:ring-4 focus:ring-green-300"
+                                        aria-label="Complete reservation for {{ reservation.date }}">
+                                    Complete Reservation
+                                </button>
+                                <span class="text-sm text-gray-500">{{ reservation.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
 
     <!-- Reviews Section -->
     <div class="mt-8">
-        <h2 class="text-3xl font-bold mb-4 text-blue-600">Reviews</h2>
+        <h2 class="text-3xl font-bold mb-4 text-red-600">Reviews</h2>
         
         <!-- Add Review Form -->
         {% if user.is_authenticated %}
@@ -41,12 +100,12 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">Comment:</label>
                         <textarea name="comment" class="form-textarea w-full border rounded-lg p-2" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition">Add Review</button>
+                    <button type="submit" class="bg-red-500 text-white px-6 py-2 rounded-lg shadow hover:bg-red-600 transition">Add Review</button>
                 </form>
             {% endif %}
         {% else %}
             <div class="mb-4 p-4 bg-yellow-100 rounded-lg">
-                <p>Please <a href="{% url 'login' %}" class="text-blue-500 font-bold">login</a> to leave a review.</p>
+                <p>Please <a href="{% url 'login' %}" class="text-red-500 font-bold">login</a> to leave a review.</p>
             </div>
         {% endif %}
 
@@ -77,7 +136,7 @@
             {% if user == review.user or user.is_superuser %}
             <div class="mt-4 flex justify-end space-x-2">
                 <button onclick="openEditModal({{ review.id }}, '{{ review.comment|escapejs }}', {{ review.rating }})" 
-                        class="bg-blue-500 text-white px-3 py-1 rounded-lg shadow hover:bg-blue-600 transition">
+                        class="bg-red-500 text-white px-3 py-1 rounded-lg shadow hover:bg-red-600 transition">
                     Edit
                 </button>
                 <button onclick="openDeleteModal({{ review.id }})" 
@@ -111,7 +170,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2">Comment:</label>
                     <textarea id="editComment" class="form-textarea w-full border rounded-lg p-2" rows="3"></textarea>
                 </div>
-                <button id="editReviewButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">Save Changes</button>
+                <button id="editReviewButton" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition">Save Changes</button>
             </form>
         </div>
     </div>
@@ -186,5 +245,41 @@
     function closeDeleteModal() {
         deleteModal.classList.add('hidden');
     }
+
+    async function completeReservation(reservationId) {
+    const button = document.querySelector(`#reservation-${reservationId} button`);
+    button.innerHTML = "Completing...";
+    button.disabled = true;
+
+    try {
+        const response = await fetch("{% url 'main:complete_reservation' 999999 %}".replace("999999", reservationId), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = DOMPurify.sanitize(data.message);
+            successMessage.classList.remove('hidden');
+            document.getElementById(`reservation-${reservationId}`).remove();
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 3000);
+        } else {
+            throw new Error("Failed to complete reservation");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("There was an error completing the reservation. Please try again.");
+    } finally {
+        button.innerHTML = "Complete Reservation";
+        button.disabled = false;
+    }
+}
+
 </script>
 {% endblock %}

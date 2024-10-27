@@ -20,6 +20,10 @@ urlpatterns = [
     path('delete_review/<int:review_id>/', delete_review, name='delete_review'),
     path('search/', search_restaurants, name='search_restaurants'),
 
+    path('reservation/<int:restaurant_id>/', make_reservation, name='make_reservation'),
+    path('complete_reservation/<int:reservation_id>/', complete_reservation, name='complete_reservation'),
+    path('reservations/', user_reservations, name='user_reservations'),
+
     path('forum_diskusi/', include('forum_diskusi.urls', namespace='forum_diskusi')),
     path('about/', about_page, name='about_page'),
 ]
