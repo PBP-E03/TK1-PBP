@@ -92,3 +92,13 @@ def delete_wishlist(request, id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
     
+@require_POST
+def delete_category(request, id):
+    try:
+        category = WishlistCategory.objects.get(id=id, user=request.user)
+        category.delete()
+        return JsonResponse({'message': 'Category deleted successfully'})
+    except WishlistCategory.DoesNotExist:
+        return JsonResponse({'error': 'Category not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
