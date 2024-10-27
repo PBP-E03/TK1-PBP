@@ -225,31 +225,3 @@ def user_reservations(request):
         'reservations': reservations,
     }
     return render(request, 'user_reservations.html', context)
-
-@require_POST
-def edit_reservation(request, reservation_id):
-    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
-    
-    try:
-        data = json.loads(request.body)
-        form = ReservationForm(data, instance=reservation)
-        
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'message': 'Reservation updated successfully!'})
-        else:
-            return JsonResponse({'error': 'Invalid data'}, status=400)
-    
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
-    
-@require_POST
-def delete_reservation(request, reservation_id):
-    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
-    
-    try:
-        reservation.delete()
-        return JsonResponse({'message': 'Reservation deleted successfully.'})
-    
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)

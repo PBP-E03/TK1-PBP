@@ -19,7 +19,7 @@
         <p class="text-gray-600"><strong>Open:</strong> {{ steakhouse.opening_time }} - {{ steakhouse.closing_time }}</p>
 
         <!-- Reservation Form -->
-        <div class="mt-4 flex justify-end">
+        <div class="mt-4 flex justify-end items-start">
             {% if user.is_authenticated %}
                 <form action="{% url 'main:make_reservation' steakhouse.id %}" method="POST" class="space-y-6">
                     {% csrf_token %}
@@ -35,49 +35,46 @@
                 </div>
             {% endif %}
         </div>
+        
+        <!-- Messages -->
+        <div class="container mx-auto my-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'error' %}text-red-500{% else %}text-green-500{% endif %} text-center font-semibold">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
 
         <!-- User Reservations -->
         {% if not reservations %}
-            <p class="text-center text-lg text-gray-500 mt-10">No reservations found.</p>
+        <p class="text-center text-lg text-gray-500 mt-10">No reservations found.</p>
         {% else %}
         <div class="container mx-auto max-w-2xl my-10">
             <h2 class="text-4xl font-extrabold mb-6 text-indigo-600 text-center">Your Reservations</h2>
             <div class="space-y-4">
                 {% for reservation in reservations %}
-                    <div id="reservation-{{ reservation.id }}" class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-indigo-600">
-                        <p class="text-xl font-semibold text-gray-800"><strong>Date:</strong> {{ reservation.date }}</p>
-                        <p class="text-xl font-semibold text-gray-800"><strong>Time:</strong> {{ reservation.time }}</p>
-                        <p class="text-xl font-semibold text-gray-800"><strong>Guests:</strong> {{ reservation.number_of_guests }}</p>
-                        <p class="text-lg text-gray-700"><strong>Special Request:</strong> {{ reservation.special_request }}</p>
-                        <div class="mt-4 flex justify-between">
-                            {% if reservation.status == 'active' %}
+                    {% if reservation.status == 'active' %}  <!-- Only display active reservations -->
+                        <div id="reservation-{{ reservation.id }}" class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-indigo-600">
+                            <p class="text-xl font-semibold text-gray-800"><strong>Date:</strong> {{ reservation.date }}</p>
+                            <p class="text-xl font-semibold text-gray-800"><strong>Time:</strong> {{ reservation.time }}</p>
+                            <p class="text-xl font-semibold text-gray-800"><strong>Guests:</strong> {{ reservation.number_of_guests }}</p>
+                            <p class="text-lg text-gray-700"><strong>Special Request:</strong> {{ reservation.special_request }}</p>
+                            <div class="mt-4 flex justify-between">
                                 <button onclick="completeReservation({{ reservation.id }})" 
                                         class="bg-green-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-green-600 transition-all duration-300 focus:ring-4 focus:ring-green-300"
                                         aria-label="Complete reservation for {{ reservation.date }}">
                                     Complete Reservation
                                 </button>
-                                <button onclick="openEditReservationModal({{ reservation.id }})" 
-                                        class="bg-blue-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300">
-                                    Edit
-                                </button>
-                                <button onclick="openDeleteReservationModal({{ reservation.id }})" 
-                                        class="bg-red-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all duration-300">
-                                    Delete
-                                </button>
-                            {% else %}
-                                <span class="text-gray-500 text-lg">Completed</span>
-                                <button onclick="moveToTrash({{ reservation.id }})" 
-                                        class="bg-gray-400 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-gray-500 transition-all duration-300">
-                                    Move to Trash
-                                </button>
-                            {% endif %}
-                            <span class="text-sm text-gray-500">{{ reservation.created_at|date:"M d, Y" }}</span>
+                                <span class="text-sm text-gray-500">{{ reservation.created_at|date:"M d, Y" }}</span>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
-        {% endif %}
+    {% endif %}
 </div>
 
     <!-- Reviews Section -->
@@ -265,16 +262,10 @@
 
         if (response.ok) {
             const data = await response.json();
-            
-            // Tampilkan pesan sukses
             const successMessage = document.getElementById('successMessage');
             successMessage.textContent = DOMPurify.sanitize(data.message);
             successMessage.classList.remove('hidden');
-
-            // Hapus elemen reservasi dari DOM
             document.getElementById(`reservation-${reservationId}`).remove();
-
-            // Sembunyikan pesan setelah 3 detik
             setTimeout(() => {
                 successMessage.classList.add('hidden');
             }, 3000);
@@ -287,77 +278,6 @@
     } finally {
         button.innerHTML = "Complete Reservation";
         button.disabled = false;
-    }
-
-    function openEditReservationModal(reservationId) {
-    // Display the edit modal
-    editModal.classList.remove('hidden');
-    // Set up an event listener on the button to handle editing
-    document.getElementById('editReservationButton').addEventListener('click', async function() {
-        try {
-            const response = await fetch(`{% url 'main:edit_reservation' 999999 %}`.replace('999999', reservationId), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    // Include the required fields for editing here
-                })
-            });
-
-            if (response.ok) {
-                window.location.reload();
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-}
-
-    function openDeleteReservationModal(reservationId) {
-        // Display the delete modal
-        deleteModal.classList.remove('hidden');
-        // Set up an event listener on the button to handle deletion
-        document.getElementById('deleteReservationButton').addEventListener('click', async function() {
-            try {
-                const response = await fetch(`{% url 'main:delete_reservation' 999999 %}`.replace('999999', reservationId), {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                });
-
-                if (response.ok) {
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    function moveToTrash(reservationId) {
-        // Display a confirmation dialog if needed
-        if (!confirm("Are you sure you want to move this reservation to the trash?")) return;
-
-        // Move the reservation to the trash via an async request
-        (async function() {
-            try {
-                const response = await fetch(`{% url 'main:delete_reservation' 999999 %}`.replace('999999', reservationId), {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                });
-
-                if (response.ok) {
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        })();
     }
 }
 
