@@ -60,8 +60,6 @@ Dataset yang digunakan berasal dari Kaggle dengan judul "Steakhouse Jakarta". Da
 
 3. Pengguna Admin:
 - Memiliki semua akses yang dimiliki pengguna login.
-- Dapat mengatur forum diskusi dan ulasan.
-- Dapat mengatur dan melihat reservasi yang dibuat di steakhouse.
-- Dapat melihat laporan statistik.
+- Dapat menambahkan, mengedit dan menghapus restoran
 
 #### Link aplikasi: http://danniel-steve.pbp.cs.ui.ac.id/

@@ -17,6 +17,41 @@
         <p class="text-gray-600"><strong>Rating:</strong> {{ steakhouse.rating }} / 5</p>
         <p class="text-gray-600"><strong>Price:</strong> Rp.{{ steakhouse.price }}</p>
         <p class="text-gray-600"><strong>Open:</strong> {{ steakhouse.opening_time }} - {{ steakhouse.closing_time }}</p>
+    <br>
+    <!-- Add to Wishlist Button -->
+    <div>
+        {% if user.is_authenticated %}
+        <button onclick="openWishlistModal({{ steakhouse.id }})" 
+                class="bg-blue-500 text-white px-3 py-1 rounded-lg shadow hover:bg-blue-600 transition">
+                Add to Wishlist
+        </button>
+        {% endif %}
+    </div>
+
+    <!-- Wishlist Section -->
+    <div id="addToWishlistModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h2 class="text-lg font-bold mb-4">Add to Wishlist</h2>
+            <form id="addToWishlistForm" onsubmit="event.preventDefault(); addToWishlistHandler({{ steakhouse.pk }});">
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700">Title:</label>
+                    <input type="text" id="title" name="title" class="form-input w-full border rounded-lg" required>
+                </div>
+                <div class="mb-4">
+                    <label for="wishlistCategory" class="block text-gray-700">Category:</label>
+                    <select id="wishlistCategory" name="wishlistCategory" class="form-select w-full border" required onchange="toggleNewCategoryInput()">
+                        <option value="">Select a category</option>
+                        <!-- Options will be populated here by JS -->
+                    </select>
+                </div>
+                <div id="newCategoryDiv" class="mb-4 hidden">
+                    <label for="newCategory" class="block text-gray-700">New Category:</label>
+                    <input type="text" id="newCategory" name="newCategory" class="form-input w-full border">
+                </div>
+                <button type="submit" id="addToWishlistButton" class="bg-green-500 text-white px-6 py-2 rounded-lg">Add to Wishlist</button>
+            </form>
+        </div>
+    </div>
 
         <!-- Reservation Form -->
         <div class="mt-4 flex justify-end items-start">
@@ -280,6 +315,81 @@
         button.disabled = false;
     }
 }
+
+    // Wishlist modal
+    let addToWishlistModal = document.getElementById('addToWishlistModal');
+
+    function openWishlistModal(steakhouse_id) {
+    addToWishlistModal.classList.remove('hidden');
+    
+    // Fetch user categories to populate the dropdown
+    fetch("{% url 'main:fetch_user_categories' %}")
+        .then(response => response.json())
+        .then(data => {
+            const categorySelect = document.getElementById('wishlistCategory');
+            categorySelect.innerHTML = ''; // Clear existing options
+
+            const option = document.createElement('option');
+            option.value = ''; 
+            option.textContent = 'Select a Category';
+            categorySelect.appendChild(option);
+
+            // Add existing categories to the dropdown
+            data.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id; // Use category ID for submission
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+
+            // Add an option for creating a new category
+            const newCategoryOption = document.createElement('option');
+            newCategoryOption.value = 'new'; // Special value to indicate new category
+            newCategoryOption.textContent = 'Create a new category';
+            categorySelect.appendChild(newCategoryOption);
+        })
+        .catch(error => console.error('Error fetching categories:', error));
+    }
+
+    async function addToWishlistHandler(steakhouse_id) {
+        try {
+            selectedCategory = document.getElementById('wishlistCategory').value;
+            newCategoryName = document.getElementById('newCategory').value;
+
+            const response = await fetch(`{% url 'main:add_to_wishlist' 999999 %}`.replace('999999', steakhouse_id), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    title: document.getElementById('title').value,
+                    category_id: selectedCategory === 'new' ? null : selectedCategory,
+                    new_category_name: selectedCategory === 'new' ? newCategoryName : null
+                })
+            });
+
+            if (response.ok) {
+                window.location.reload(); 
+            } else {
+                alert('Failed to add to wishlist. Please try again.'); 
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+function toggleNewCategoryInput() {
+    const categorySelect = document.getElementById('wishlistCategory');
+    const newCategoryDiv = document.getElementById('newCategoryDiv');
+
+    if (categorySelect.value === 'new') {
+        newCategoryDiv.classList.remove('hidden');
+    } else {
+        newCategoryDiv.classList.add('hidden');
+    }
+}
+
 
 </script>
 {% endblock %}
