@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('forum/', include('forum_diskusi.urls', namespace='forum_diskusi')),
+    path('wishlist/', include(('wishlist.urls', 'wishlist'), namespace='wishlist')), 
 ]

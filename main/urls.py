@@ -26,4 +26,7 @@ urlpatterns = [
 
     path('forum_diskusi/', include('forum_diskusi.urls', namespace='forum_diskusi')),
     path('about/', about_page, name='about_page'),
+    
+    path('wishlist/add/<int:restaurant_id>/', add_to_wishlist, name='add_to_wishlist'),
+    path('fetch-user-categories/', fetch_user_categories, name='fetch_user_categories'),
 ]
