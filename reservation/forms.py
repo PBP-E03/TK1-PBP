@@ -1,11 +1,5 @@
 from django.forms import ModelForm
-from resto.models import Restaurant 
 from reservation.models import Reservation
-
-class RestaurantForm(ModelForm):
-    class Meta:
-        model = Restaurant
-        fields = ["name", "location", "price", "special_menu","description", "opening_time", "closing_time"]
 
 class ReservationForm(ModelForm):
     class Meta:

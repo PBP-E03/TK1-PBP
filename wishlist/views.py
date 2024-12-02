@@ -102,3 +102,38 @@ def delete_category(request, id):
         return JsonResponse({'error': 'Category not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+
+# Pindahan dari main/views.py
+
+# Wishlist section
+@login_required
+def fetch_user_categories(request):
+    categories = WishlistCategory.objects.filter(user=request.user).values('id', 'name')
+    return JsonResponse(list(categories), safe=False)
+
+@require_POST
+def add_to_wishlist(request, restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+    user = request.user
+
+    data = json.loads(request.body) 
+    title = data.get('title')
+    category_id = data.get('category_id')  
+    new_category_name = data.get('new_category_name')   
+
+    if new_category_name:
+        category = WishlistCategory.objects.create(name=new_category_name, user=user)
+    else:
+        category = get_object_or_404(WishlistCategory, id=category_id, user=user)
+
+    new_wishlist = WishlistItem(
+        restaurant=restaurant, user=user,
+        title=title, wishlistCategory=category
+    )
+    new_wishlist.save()
+
+    print("Title:", title)
+    print("Category ID:", category_id)
+    print("New Category Name:", new_category_name)
+    return JsonResponse({'status': 'CREATED'}, status=201)

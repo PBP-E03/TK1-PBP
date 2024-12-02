@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'wishlist',
     'discussion',
     'forum_diskusi',
+    'authentication',
 ]
 
 MIDDLEWARE = [
