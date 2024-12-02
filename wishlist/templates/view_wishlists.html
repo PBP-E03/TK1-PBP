@@ -144,7 +144,7 @@
     document.getElementById('editTitle').value = title; // Set title field
 
     // Fetch user categories to populate the dropdown
-    fetch("{% url 'main:fetch_user_categories' %}")
+    fetch("{% url 'wishlist:fetch_user_categories' %}")
         .then(response => response.json())
         .then(data => {
             const categorySelect = document.getElementById('wishlistCategory');

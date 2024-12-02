@@ -103,7 +103,7 @@
     <div class="mt-4 flex justify-end items-start">
       {% if user.is_authenticated %}
       <form
-        action="{% url 'main:make_reservation' steakhouse.id %}"
+        action="{% url 'reservation:make_reservation' steakhouse.id %}"
         method="POST"
         class="space-y-6"
       >
@@ -196,7 +196,7 @@
     <!-- Add Review Form -->
     {% if user.is_authenticated %} {% if not user_has_reviewed %}
     <form
-      action="{% url 'main:add_review' steakhouse.id %}"
+      action="{% url 'resto_rating:add_review' steakhouse.id %}"
       method="POST"
       class="mb-8 p-6 bg-white shadow-lg rounded-lg"
     >
@@ -417,7 +417,7 @@
         .addEventListener("click", async function () {
           try {
             const response = await fetch(
-              `{% url 'main:edit_review' 999999 %}`.replace("999999", reviewId),
+              `{% url 'resto_rating:edit_review' 999999 %}`.replace("999999", reviewId),
               {
                 method: "POST",
                 headers: {
@@ -447,7 +447,7 @@
         .addEventListener("click", async function () {
           try {
             const response = await fetch(
-              `{% url 'main:delete_review' 999999 %}`.replace(
+              `{% url 'resto_rating:delete_review' 999999 %}`.replace(
                 "999999",
                 reviewId
               ),
@@ -477,7 +477,7 @@
 
       try {
         const response = await fetch(
-          "{% url 'main:complete_reservation' 999999 %}".replace(
+          "{% url 'reservation:complete_reservation' 999999 %}".replace(
             "999999",
             reservationId
           ),
@@ -522,7 +522,7 @@
 
       try {
         const response = await fetch(
-          "{% url 'main:complete_reservation' 999999 %}".replace(
+          "{% url 'reservation:complete_reservation' 999999 %}".replace(
             "999999",
             reservationId
           ),
@@ -569,7 +569,7 @@
       addToWishlistModal.classList.remove("hidden");
 
       // Fetch user categories to populate the dropdown
-      fetch("{% url 'main:fetch_user_categories' %}")
+      fetch("{% url 'wishlist:fetch_user_categories' %}")
         .then((response) => response.json())
         .then((data) => {
           const categorySelect = document.getElementById("wishlistCategory");
@@ -603,7 +603,7 @@
         newCategoryName = document.getElementById("newCategory").value;
 
         const response = await fetch(
-          `{% url 'main:add_to_wishlist' 999999 %}`.replace(
+          `{% url 'wishlist:add_to_wishlist' 999999 %}`.replace(
             "999999",
             steakhouse_id
           ),

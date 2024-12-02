@@ -26,7 +26,7 @@
             <!-- Centered Add Restaurant Button (Only for Superuser) -->
             {% if user.is_superuser %}
                 <div class="w-full max-w-2xl flex justify-center">
-                    <a href="{% url 'main:add_resto' %}" class="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition">
+                    <a href="{% url 'resto:add_resto' %}" class="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition">
                         + Add Restaurant
                     </a>
                 </div>
@@ -96,7 +96,7 @@
         <div id="restaurant_cards"></div>
     </section>
     
-        <!-- Footer Section -->
+    <!-- Footer Section -->
     <footer id = "contact" class="bg-black text-white py-12 mt-16">
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center md:items-start space-y-8 md:space-y-0 text-center md:text-left">
             
@@ -151,8 +151,8 @@
             const name = DOMPurify.sanitize(restaurant.fields.name);
             const location = DOMPurify.sanitize(restaurant.fields.location);
             const description = DOMPurify.sanitize(restaurant.fields.description);
-            const deleteUrl = `{% url 'main:delete_resto' 0 %}`.replace('0', restaurant.pk); 
-            const editUrl = `{% url 'main:edit_resto' 0 %}`.replace('0', restaurant.pk); 
+            const deleteUrl = `{% url 'resto:delete_resto' 0 %}`.replace('0', restaurant.pk); 
+            const editUrl = `{% url 'resto:edit_resto' 0 %}`.replace('0', restaurant.pk); 
             const opening_time = DOMPurify.sanitize(restaurant.fields.opening_time);
             const closing_time = DOMPurify.sanitize(restaurant.fields.closing_time);
             const steakhouseUrl = `{% url 'main:steakhouse_page' 999999 %}`.replace('999999', restaurant.pk);
@@ -232,7 +232,7 @@
                 return;
             }
             try {
-                const response = await fetch(`{% url 'main:search_restaurants' %}?q=${encodeURIComponent(steakhouse)}`);
+                const response = await fetch(`{% url 'resto:search_restaurants' %}?q=${encodeURIComponent(steakhouse)}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch results.");
                 }
@@ -247,8 +247,8 @@
                         const name = DOMPurify.sanitize(restaurant.name);
                         const location = DOMPurify.sanitize(restaurant.location);
                         const description = DOMPurify.sanitize(restaurant.description);
-                        const deleteUrl = `{% url 'main:delete_resto' 0 %}`.replace('0', restaurant.id); 
-                        const editUrl = `{% url 'main:edit_resto' 0 %}`.replace('0', restaurant.id); 
+                        const deleteUrl = `{% url 'resto:delete_resto' 0 %}`.replace('0', restaurant.id); 
+                        const editUrl = `{% url 'resto:edit_resto' 0 %}`.replace('0', restaurant.id); 
                         const opening_time = DOMPurify.sanitize(restaurant.opening_time);
                         const closing_time = DOMPurify.sanitize(restaurant.closing_time);
                         const nameModal = name.replace(/'/g, "\\'");

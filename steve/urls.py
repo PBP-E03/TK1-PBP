@@ -21,6 +21,10 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('resto/', include('resto.urls', namespace='resto')),
     path('forum/', include('forum_diskusi.urls', namespace='forum_diskusi')),
     path('wishlist/', include(('wishlist.urls', 'wishlist'), namespace='wishlist')), 
+    path('auth/', include('authentication.urls')),
+    path('rating/', include('resto_rating.urls', namespace='resto_rating')),
+    path('reservation/', include('reservation.urls', namespace='reservation')),
 ]
