@@ -64,8 +64,8 @@ ROOT_URLCONF = 'steve.urls'
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
-    "http://pbp.cs.ui.ac.id/danniel/steve", 
-    "https://pbp.cs.ui.ac.id/danniel/steve"
+    "http://danniel-steve.pbp.cs.ui.ac.id", 
+    "https://danniel-steve.pbp.cs.ui.ac.id"
 ]
 TEMPLATES = [
     {
