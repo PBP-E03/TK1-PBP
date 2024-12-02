@@ -62,6 +62,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'steve.urls'
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://pbp.cs.ui.ac.id/danniel/steve", 
+    "https://pbp.cs.ui.ac.id/danniel/steve"
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
