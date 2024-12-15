@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
+from django.core import serializers
 from django.urls import reverse
 
 # Forms
@@ -61,3 +62,8 @@ def search_restaurants(request):
     ]
     
     return JsonResponse({'restaurants': results})
+
+# Flutter
+def get_restaurants(request):
+    restaurants = Restaurant.objects.all()
+    return HttpResponse(serializers.serialize("json", restaurants), content_type="application/json")
