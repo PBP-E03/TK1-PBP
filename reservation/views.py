@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json, datetime
 
 # Form and Model
 from reservation.forms import ReservationForm
@@ -39,7 +41,7 @@ def make_reservation(request, restaurant_id):
 
 @login_required(login_url='authentication:user_login')
 def user_reservations(request):
-    reservations = Reservation.objects.filter(user=request.user)
+    reservations = Reservation.objects.filter(user=request.user).order_by('-date')
     context = {
         'reservations': reservations,
     }
@@ -48,8 +50,59 @@ def user_reservations(request):
 @login_required(login_url='authentication:user_login')
 def complete_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+    
+    # Ensure that a reservation cannot be marked as completed if it is already completed or canceled
+    if reservation.status in ['completed', 'canceled']:
+        return JsonResponse({'error': 'Reservation cannot be completed again.'}, status=400)
+
     reservation.status = 'completed'
     reservation.save()
+
     messages.success(request, 'Reservation completed successfully.')
-    
     return JsonResponse({'message': 'Reservation completed successfully.'})
+
+@require_POST
+def edit_reservation(request, reservation_id):
+    try:
+        reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+
+        # Pastikan reservasi belum selesai atau dibatalkan
+        if reservation.status in ['completed', 'canceled']:
+            return JsonResponse({'error': 'Reservation cannot be edited once it is completed or canceled.'}, status=400)
+
+        # Ambil data yang dikirim dari frontend
+        data = json.loads(request.body)
+        date = data.get('date')
+        time = data.get('time')
+        special_request = data.get('special_request')
+
+        # Validasi input (optional, tetapi disarankan)
+        if not date or not time:
+            return JsonResponse({'error': 'Date and time are required.'}, status=400)
+
+        # Update reservasi
+        reservation.date = date
+        reservation.time = time
+        reservation.special_request = special_request
+        reservation.save()
+
+        return JsonResponse({'message': 'Reservation updated successfully.'})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+    
+@require_POST
+def delete_reservation(request, reservation_id):
+    try:
+        reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+
+        # Ensure the reservation is not already completed or canceled
+        if reservation.status in ['completed', 'canceled']:
+            return JsonResponse({'error': 'Reservation cannot be deleted once it is completed or canceled.'}, status=400)
+
+        reservation.status = 'canceled'  # Soft delete by changing status
+        reservation.save()
+
+        return JsonResponse({'message': 'Reservation canceled successfully.'})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+    
