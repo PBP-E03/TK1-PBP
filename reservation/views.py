@@ -50,8 +50,6 @@ def user_reservations(request):
 @login_required(login_url='authentication:user_login')
 def complete_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
-    
-    # Ensure that a reservation cannot be marked as completed if it is already completed or canceled
     if reservation.status in ['completed', 'canceled']:
         return JsonResponse({'error': 'Reservation cannot be completed again.'}, status=400)
 
@@ -66,21 +64,14 @@ def edit_reservation(request, reservation_id):
     try:
         reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
 
-        # Pastikan reservasi belum selesai atau dibatalkan
         if reservation.status in ['completed', 'canceled']:
             return JsonResponse({'error': 'Reservation cannot be edited once it is completed or canceled.'}, status=400)
-
-        # Ambil data yang dikirim dari frontend
         data = json.loads(request.body)
         date = data.get('date')
         time = data.get('time')
         special_request = data.get('special_request')
-
-        # Validasi input (optional, tetapi disarankan)
         if not date or not time:
             return JsonResponse({'error': 'Date and time are required.'}, status=400)
-
-        # Update reservasi
         reservation.date = date
         reservation.time = time
         reservation.special_request = special_request
@@ -94,12 +85,10 @@ def edit_reservation(request, reservation_id):
 def delete_reservation(request, reservation_id):
     try:
         reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
-
-        # Ensure the reservation is not already completed or canceled
         if reservation.status in ['completed', 'canceled']:
             return JsonResponse({'error': 'Reservation cannot be deleted once it is completed or canceled.'}, status=400)
 
-        reservation.status = 'canceled'  # Soft delete by changing status
+        reservation.status = 'canceled'
         reservation.save()
 
         return JsonResponse({'message': 'Reservation canceled successfully.'})
