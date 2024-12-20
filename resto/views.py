@@ -4,7 +4,6 @@ from django.core import serializers
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-
 import json
 
 # Forms
@@ -94,3 +93,16 @@ def create_restaurant_flutter(request):
         return JsonResponse({'status': 'success'})
     
     return JsonResponse({'status': 'failed'}, status=400)
+
+@csrf_exempt
+def delete_restaurant_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            delete_resto = get_object_or_404(Restaurant, id=data['id'])
+            delete_resto.delete()
+        except Exception as e:
+            print(e)
+            return JsonResponse({'status': 'failed'}, status = 400)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'failed'}, status = 400)
