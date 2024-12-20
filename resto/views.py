@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.core import serializers
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+
+
+import json
 
 # Forms
 from resto.forms import RestaurantForm
@@ -67,3 +71,26 @@ def search_restaurants(request):
 def get_restaurants(request):
     restaurants = Restaurant.objects.all()
     return HttpResponse(serializers.serialize("json", restaurants), content_type="application/json")
+
+@csrf_exempt
+def create_restaurant_flutter(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            new_resto = Restaurant(
+                name=data['name'],
+                location=data['address'],
+                description=data['description'],
+                special_menu=data['special_menu'],
+                price=data['price'],
+                opening_time=data['open_time'],
+                closing_time=data['close_time']   
+            )
+            new_resto.save()
+        except Exception as e:
+            print(e)
+            return JsonResponse({'status': 'failed'}, status=400)
+            
+        return JsonResponse({'status': 'success'})
+    
+    return JsonResponse({'status': 'failed'}, status=400)

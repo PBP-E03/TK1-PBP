@@ -9,4 +9,5 @@ urlpatterns = [
     path('search/', search_restaurants, name='search_restaurants'),
     
     path('flutter/get-restaurants/', get_restaurants, name='get_restaurants'),
+    path('flutter/create-resto/', create_restaurant_flutter, name='create_resto')
 ]
