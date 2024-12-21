@@ -106,3 +106,36 @@ def delete_restaurant_flutter(request):
             return JsonResponse({'status': 'failed'}, status = 400)
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'failed'}, status = 400)
+
+@csrf_exempt
+def edit_restaurant_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_resto = Restaurant(
+                name=data['name'],
+                location=data['address'],
+                description=data['description'],
+                special_menu=data['special_menu'],
+                price=data['price'],
+                opening_time=data['open_time'],
+                closing_time=data['close_time']   
+            )
+            edited_restaurant = get_object_or_404(Restaurant, id=data['id'])
+
+            # Update the restaurant
+            edited_restaurant.name = new_resto.name
+            edited_restaurant.location = new_resto.location
+            edited_restaurant.description = new_resto.description
+            edited_restaurant.special_menu = new_resto.special_menu
+            edited_restaurant.price = new_resto.price
+            edited_restaurant.opening_time = new_resto.opening_time
+            edited_restaurant.closing_time = new_resto.closing_time
+            
+            edited_restaurant.save()
+            return JsonResponse({'status': 'success'}, status=200)
+            
+        except Exception as e:
+            print(e)
+            return JsonResponse({'status': 'failed'}, status=400)
+    return JsonResponse({'status': 'failed'}, status=400)
