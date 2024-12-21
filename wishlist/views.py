@@ -137,3 +137,114 @@ def add_to_wishlist(request, restaurant_id):
     print("Category ID:", category_id)
     print("New Category Name:", new_category_name)
     return JsonResponse({'status': 'CREATED'}, status=201)
+
+# flutter
+@csrf_exempt
+def add_to_wishlist_flutter(request):
+    if request.method == 'POST':
+        user=request.user
+
+        data = json.loads(request.body)
+        restaurant_id = data.get('restaurant_id')
+        restaurant = Restaurant.objects.get(id=restaurant_id)
+        
+        title = data.get('title')
+        category_id = data.get('category_id')
+        new_category_name = data.get('new_category_name')
+        
+        if new_category_name:
+            category = WishlistCategory.objects.create(name=new_category_name, user=user)
+        else:
+            category = get_object_or_404(WishlistCategory, id=category_id, user=user)
+
+        new_wishlist = WishlistItem(
+            restaurant=restaurant, user=user,
+            title=title, wishlistCategory=category
+        )
+        new_wishlist.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+    
+def show_json(request):
+    user = request.user
+
+    if user:
+        categories = WishlistCategory.objects.filter(user=user)
+        items = WishlistItem.objects.filter(user=user)
+    else:
+        categories = WishlistCategory.objects.all()
+        items = WishlistItem.objects.all()
+
+    categories_data = serializers.serialize("json", categories)
+    items_data = serializers.serialize("json", items)
+
+    combined_data = {
+        "wishlist_categories": json.loads(categories_data),
+        "wishlist_items": json.loads(items_data),
+    }
+
+    return JsonResponse(combined_data)
+
+@csrf_exempt
+@require_POST
+def edit_flutter(request):
+    try:
+        data = json.loads(request.body)
+
+        wishlist_id = data.get('wishlist_id')
+        new_title = data.get('title')
+        category_id = data.get('category_id')  
+        new_category_name = data.get('new_category_name')   
+
+        wishlistItem = WishlistItem.objects.get(id=wishlist_id)
+        
+        if new_title:
+            wishlistItem.title = new_title
+        
+        if new_category_name:
+            wishlistItem.wishlistCategory = WishlistCategory.objects.create(name=new_category_name, user=request.user)
+        else:
+            wishlistItem.wishlistCategory = get_object_or_404(WishlistCategory, id=category_id, user=request.user)
+            
+        wishlistItem.save()
+
+        return JsonResponse({'status': 'success'}, status=200)
+    except Exception as e:
+        return JsonResponse({'status': str(e)}, status=400)
+
+@csrf_exempt 
+@require_POST
+def delete_flutter(request):
+    try:
+        data = json.loads(request.body)
+        wishlist_id = data.get('wishlist_id')
+
+        if not wishlist_id:
+            return JsonResponse({'status': 'Wishlist ID is missing'}, status=400)
+        
+        wishlistItem = WishlistItem.objects.get(id=wishlist_id)
+        wishlistItem.delete()
+
+        return JsonResponse({'status': 'success'}, status=200)
+    except WishlistItem.DoesNotExist:
+        return JsonResponse({'status': 'Wishlist item not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': str(e)}, status=400)
+    
+@csrf_exempt
+@require_POST
+def delete_category_flutter(request):
+    try:
+        data = json.loads(request.body)
+        category_id = data.get('category_id')
+
+        category = WishlistCategory.objects.get(id=category_id, user=request.user)
+        category.delete()
+
+        return JsonResponse({'message': 'Category deleted successfully'})
+    except WishlistCategory.DoesNotExist:
+        return JsonResponse({'error': 'Category not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
