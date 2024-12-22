@@ -134,7 +134,7 @@ def edit_restaurant_flutter(request):
             edited_restaurant.closing_time = new_resto.closing_time
             
             edited_restaurant.save()
-            print(request.user)
+            # print(request.user)
             return JsonResponse({'status': 'success'}, status=200)
             
         except Exception as e:
