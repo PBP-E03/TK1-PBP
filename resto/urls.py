@@ -9,4 +9,7 @@ urlpatterns = [
     path('search/', search_restaurants, name='search_restaurants'),
     
     path('flutter/get-restaurants/', get_restaurants, name='get_restaurants'),
+    path('flutter/create-resto/', create_restaurant_flutter, name='create_resto_flutter'),
+    path('flutter/delete-resto/', delete_restaurant_flutter, name='delete_restaurant_flutter'),
+    path('flutter/edit-resto/', edit_restaurant_flutter, name='edit_restaurant_flutter'),
 ]
