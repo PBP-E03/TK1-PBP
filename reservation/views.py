@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json, datetime
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
 
 # Form and Model
 from reservation.forms import ReservationForm
@@ -60,32 +61,44 @@ def complete_reservation(request, reservation_id):
     messages.success(request, 'Reservation completed successfully.')
     return JsonResponse({'message': 'Reservation completed successfully.'})
 
+@csrf_exempt
 @require_POST
 def edit_reservation(request, reservation_id):
     try:
+        data = json.loads(request.body)
         reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
 
         if reservation.status in ['completed', 'canceled']:
             return JsonResponse({'error': 'Reservation cannot be edited once it is completed or canceled.'}, status=400)
-        data = json.loads(request.body)
+
+        # Validate inputs
         date = data.get('date')
         time = data.get('time')
-        special_request = data.get('special_request')
         if not date or not time:
             return JsonResponse({'error': 'Date and time are required.'}, status=400)
+        try:
+            datetime.datetime.strptime(date, '%Y-%m-%d')
+            datetime.datetime.strptime(time, '%H:%M:%S')
+        except ValueError:
+            return JsonResponse({'error': 'Invalid date or time format. Use YYYY-MM-DD and HH:MM:SS.'}, status=400)
+
+        # Update reservation
         reservation.date = date
         reservation.time = time
-        reservation.special_request = special_request
+        reservation.special_request = data.get('special_request', reservation.special_request)
         reservation.save()
 
         return JsonResponse({'message': 'Reservation updated successfully.'})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
     
+@csrf_exempt
 @require_POST
 def delete_reservation(request, reservation_id):
     try:
         reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+
         if reservation.status in ['completed', 'canceled']:
             return JsonResponse({'error': 'Reservation cannot be deleted once it is completed or canceled.'}, status=400)
 
@@ -95,20 +108,50 @@ def delete_reservation(request, reservation_id):
         return JsonResponse({'message': 'Reservation canceled successfully.'})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
-    
+
+
 @csrf_exempt
 def create_reservation(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        reservation = Reservation.objects.create(
-            user_id=data['user_id'],
-            restaurant_id=data['restaurant_id'],
-            name=data['name'],
-            date=data['date'],
-            time=data['time'],
-            guests=data['guests'],
-            contact_info=data['contact_info'],
-            special_request=data.get('special_request', ''),
-            status='active',
-        )
-        return JsonResponse({'message': 'Reservation created successfully', 'reservation_id': reservation.id}, status=201)
+        try:
+            data = json.loads(request.body)
+
+            required_fields = ['user_id', 'restaurant_id', 'name', 'date', 'time', 'guests', 'contact_info']
+            missing_fields = [field for field in required_fields if not data.get(field)]
+            if missing_fields:
+                return JsonResponse({'error': f'Missing fields: {", ".join(missing_fields)}'}, status=400)
+
+            # Validate date and time formats
+            try:
+                datetime.datetime.strptime(data['date'], '%Y-%m-%d')
+                datetime.datetime.strptime(data['time'], '%H:%M:%S')
+            except ValueError:
+                return JsonResponse({'error': 'Invalid date or time format. Use YYYY-MM-DD and HH:MM:SS.'}, status=400)
+
+            # Check for existing active reservation
+            if Reservation.objects.filter(
+                user_id=data['user_id'], 
+                restaurant_id=data['restaurant_id'], 
+                status='active'
+            ).exists():
+                return JsonResponse({'error': 'An active reservation already exists for this user at this restaurant.'}, status=400)
+
+            # Create reservation
+            reservation = Reservation.objects.create(
+                user_id=data['user_id'],
+                restaurant_id=data['restaurant_id'],
+                name=data['name'],
+                date=data['date'],
+                time=data['time'],
+                guests=data['guests'],
+                contact_info=data['contact_info'],
+                special_request=data.get('special_request', ''),
+                status='active',
+            )
+            return JsonResponse({'message': 'Reservation created successfully', 'reservation_id': reservation.id}, status=201)
+
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': f'An unexpected error occurred: {e}'}, status=500)
+    return JsonResponse({'error': 'Invalid HTTP method.'}, status=405)
