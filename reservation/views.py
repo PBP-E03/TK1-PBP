@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json, datetime
+from django.views.decorators.csrf import csrf_exempt
 
 # Form and Model
 from reservation.forms import ReservationForm
@@ -95,3 +96,19 @@ def delete_reservation(request, reservation_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
     
+@csrf_exempt
+def create_reservation(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        reservation = Reservation.objects.create(
+            user_id=data['user_id'],
+            restaurant_id=data['restaurant_id'],
+            name=data['name'],
+            date=data['date'],
+            time=data['time'],
+            guests=data['guests'],
+            contact_info=data['contact_info'],
+            special_request=data.get('special_request', ''),
+            status='active',
+        )
+        return JsonResponse({'message': 'Reservation created successfully', 'reservation_id': reservation.id}, status=201)
