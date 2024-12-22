@@ -299,8 +299,13 @@
         <div>
           <span class="font-bold text-lg">{{ review.user.username }}</span>
           <span class="ml-2 text-yellow-500">
-            {% for i in "12345" %} {% if i|add:0 <= review.rating %} ★ {% else
-            %} ☆ {% endif %} {% endfor %}
+            {% for i in "12345" %}
+              {% if i|add:0 <= review.rating %}
+                  ★
+              {% else %}
+                  ☆
+              {% endif %}
+            {% endfor %}
           </span>
           <span class="text-gray-500"> ({{ review.rating }}/5)</span>
         </div>
