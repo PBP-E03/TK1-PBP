@@ -126,9 +126,9 @@ def flutter_add_review(request, restaurant_id):
             
             # If no existing review, create a new one
             Review.objects.create(
-                restaurant=restaurant,
+                restaurant=restaurant, 
                 user=user,
-                username = user.username,
+                # username = user.username,
                 rating=rating,
                 comment=comment
             )
