@@ -63,7 +63,6 @@ def search_restaurants(request):
         }
         for restaurant in restaurants
     ]
-    
     return JsonResponse({'restaurants': results})
 
 # Flutter
@@ -89,7 +88,9 @@ def create_restaurant_flutter(request):
         except Exception as e:
             print(e)
             return JsonResponse({'status': 'failed'}, status=400)
-            
+        
+        if request.user.is_authenticated:
+            print(request.user)
         return JsonResponse({'status': 'success'})
     
     return JsonResponse({'status': 'failed'}, status=400)
@@ -133,6 +134,7 @@ def edit_restaurant_flutter(request):
             edited_restaurant.closing_time = new_resto.closing_time
             
             edited_restaurant.save()
+            print(request.user)
             return JsonResponse({'status': 'success'}, status=200)
             
         except Exception as e:

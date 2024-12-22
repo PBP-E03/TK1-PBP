@@ -57,6 +57,7 @@ def flutter_login(request):
         if user.is_active:
             login(request, user)
             # Status login sukses.
+            print(request.user)
             return JsonResponse({
                 "username": user.username,
                 "status": True,
