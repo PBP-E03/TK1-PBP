@@ -27,7 +27,7 @@ import os
 PRODUCTION = os.getenv("PRODUCTION", False)
 DEBUG = not PRODUCTION
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danniel-steve.pbp.cs.ui.ac.id", "http://pbp.cs.ui.ac.id/danniel/steve", "https://pbp.cs.ui.ac.id/danniel/steve", "10.0.2.2"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danniel-steve.pbp.cs.ui.ac.id", "pbp.cs.ui.ac.id/danniel/steve", "pbp.cs.ui.ac.id/danniel/steve", "10.0.2.2", '*']
 
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
